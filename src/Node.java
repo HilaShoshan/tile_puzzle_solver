@@ -1,8 +1,7 @@
 public class Node {
 
-    private int ID;
     private int[][] state;
-    // path
+    private int[] path;
     // cost
 
     public Node(int[][] state) {
@@ -30,19 +29,19 @@ public class Node {
         return null;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
     public int[][] getState() {
         return state;
     }
 
     public void setState(int[][] state) {
         this.state = state;
+    }
+
+    public int[] getPath() {
+        return path;
+    }
+
+    public void setPath(int[] path) {
+        this.path = path;
     }
 }

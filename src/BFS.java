@@ -13,12 +13,25 @@ public class BFS extends Algorithm {
 
     public void run() {
         Queue<Node> L_queue = new ArrayBlockingQueue<Node>(0);  // what is its size??
-        Hashtable<Integer, Node> L_hash = new Hashtable();  // parallel to the queue, in order to find organs in O(1)
-        Hashtable<Integer, Node> C = new Hashtable();
-        Node n;
+        Set<Node> L_hash = new HashSet<>();  // parallel to the queue, in order to find organs in O(1)
+        Set<Node> C = new HashSet<>();
+        Node n, g;
         while (!L_queue.isEmpty()) {
             n = L_queue.peek();  // returns the element at the head the queue
-            C.put(n.getID(), n);
+            C.add(n);
+            for (char c : operators) {
+                g = n.operator(c);
+                if (g != null && !C.contains(g) && !L_hash.contains(g)) {
+                    if (isGoal(g.getState())) return;  // should return the path!
+                    L_queue.add(g);
+                    L_hash.add(g);
+                }
+            }
         }
+        return;  // return false....
+    }
+
+    public boolean isGoal(int[][] state) {
+        return false;
     }
 }

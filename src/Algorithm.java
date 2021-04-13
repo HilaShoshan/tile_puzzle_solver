@@ -5,5 +5,7 @@ public class Algorithm {
     private int cost;
     private char prev_operator;  // the previous operator we've done, so we won't do the opposite operator just after it.
 
+    public char[] operators = new char[]{'l', 'u', 'r', 'd'};
+
     public void run() {}
 }
