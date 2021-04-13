@@ -7,5 +7,7 @@ public class Algorithm {
 
     public char[] operators = new char[]{'l', 'u', 'r', 'd'};
 
-    public void run() {}
+    public int[] run() {
+        return null;
+    }
 }

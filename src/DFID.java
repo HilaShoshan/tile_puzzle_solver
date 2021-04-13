@@ -2,5 +2,7 @@ public class DFID extends Algorithm {
 
     public DFID(InitGame game) {}
 
-    public void run() {}
+    public int[] run() {
+        return null;
+    }
 }

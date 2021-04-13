@@ -2,5 +2,7 @@ public class DFBnB extends Algorithm {
 
     public DFBnB(InitGame game) {}
 
-    public void run() {}
+    public int[] run() {
+        return null;
+    }
 }

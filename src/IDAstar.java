@@ -2,5 +2,7 @@ public class IDAstar extends Algorithm {
 
     public IDAstar(InitGame game) {}
 
-    public void run() {}
+    public int[] run() {
+        return null;
+    }
 }
