@@ -1,10 +1,8 @@
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.Queue;
 import java.util.*;
 
 public class BFS extends Algorithm {
 
-    private Node state, goal_state;
+    private Node state, temp, goal_state;
 
     public BFS(InitGame game) {  // maybe change the given param!!
         this.state = new Node(game.getStart_state());
@@ -12,26 +10,29 @@ public class BFS extends Algorithm {
     }
 
     public int[] run() {
-        Queue<Node> L_queue = new ArrayBlockingQueue<Node>(0);  // what is its size??
+        Queue<Node> L_queue = new LinkedList<>();
         Set<Node> L_hash = new HashSet<>();  // parallel to the queue, in order to find organs in O(1)
-        Set<Node> C = new HashSet<>();
-        Node n, g;
+        Set<Node> C = new HashSet<>();  // closeList
+        L_queue.add(state);
+        L_hash.add(state);
         while (!L_queue.isEmpty()) {
-            n = L_queue.peek();  // returns the element at the head the queue
-            C.add(n);
-            for (char c : operators) {
-                g = n.operator(c);
-                if (g != null && !C.contains(g) && !L_hash.contains(g)) {
-                    if (isGoal(g.getState())) return g.getPath();
-                    L_queue.add(g);
-                    L_hash.add(g);
-                }
-            }
+            state = L_queue.peek();  // returns the element at the head the queue
+            C.add(state);
+            for (int i = 0; i < state.getBoard().length; i++)
+                for (int j = 0; j < state.getBoard()[0].length; j++)
+                    for (char c : operators) {
+                        temp = state.operator(c, i, j);
+                        if (temp != null && !C.contains(temp) && !L_hash.contains(temp)) {
+                            if (isGoal(temp.getBoard())) return temp.getPath();
+                            L_queue.add(temp);
+                            L_hash.add(temp);
+                        }
+                    }
         }
         return null;  // return false....
     }
 
-    public boolean isGoal(int[][] state) {
+    public boolean isGoal(int[][] board) {
         return false;
     }
 }

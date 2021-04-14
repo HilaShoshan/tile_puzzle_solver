@@ -1,40 +1,80 @@
 public class Node {
 
-    private int[][] state;
+    private int[][] board;
     private int[] path;
     // cost
 
-    public Node(int[][] state) {
-        this.state = state;
+    public Node(int[][] board) {
+        this.board = board;
     }
 
     /**
-     * Move the node according to the action received (left/up/right/down) if it's possible.
+     * Move the number on (i,j) location according to the action received (left/up/right/down) if it's possible.
      * @param c is a char representing the action to do.
      *          Can be one of: 'l'=left | 'u'=up | 'r'=right | 'd'=down
+     * @param i is the row of the organ in the matrix we want to move.
+     * @param j is the column of it.
      * @return a new node that represents the new state,
      * or null if it's impossible (exceeding the matrix limits or non-empty cell where you want to move the node),
      */
-    public Node operator(char c) {
-        return null;
+    public Node operator(char c, int i, int j) {
+        int new_i, new_j;
+        int[][] new_board = new int[board.length][board[0].length];  // create a new board
+        switch (c) {
+            case 'l':
+                new_i = i;
+                new_j = j-1;
+                break;
+            case 'u':
+                new_i = i-1;
+                new_j = j;
+                break;
+            case 'r':
+                new_i = i;
+                new_j = j+1;
+                break;
+            case 'd':
+                new_i = i+1;
+                new_j = j;
+                break;
+            default:
+                return null;
+        }
+        new_board = move(i, j, new_i, new_j, new_board);
+        return new Node(new_board);
+    }
+
+    private int[][] move(int i, int j, int new_i, int new_j, int[][] new_board) {
+        if (i >= board.length || j >= board[0].length)  // exceeding the matrix limits
+            return null;
+        if (board[new_i][new_j] != 0)  // not an empty cell --> can't move
+            return null;
+        for (int x = 0; x < board.length; x++)
+            new_board[x] = board[x].clone();  // copy the board to the new_board
+        new_board[new_i][new_j] = board[i][j];  // move the organ to it's new place
+        new_board[i][j] = 0;  // the old cell is empty now
+        return new_board;
     }
 
     /**
      * Move two nodes (this node + node n) according to the action received.
      * @param n is another node which is a neighbor of the this node in the board.
      * @param c is a char that can be one from the 4 characters mentioned in the previous function.
+     * @param i organ's row.
+     * @param j organ's column.
      * @return a new node that represents the new state, or null in case that it's impossible.
      */
-    public Node operator(Node n, char c) {
+    public Node operator(Node n, char c, int i, int j) {
+
         return null;
     }
 
-    public int[][] getState() {
-        return state;
+    public int[][] getBoard() {
+        return board;
     }
 
-    public void setState(int[][] state) {
-        this.state = state;
+    public void setBoard(int[][] board) {
+        this.board = board;
     }
 
     public int[] getPath() {

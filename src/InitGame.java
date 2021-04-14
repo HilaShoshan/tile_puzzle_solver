@@ -62,18 +62,12 @@ public class InitGame {
         // System.out.println(" i  =  " + i);
         String[] numbers = line.split(",");  // get an array of all the numbers on this row of the board
         for (int j = 0; j < M; j++) {  // fill the columns
-            if (numbers[j].equals("_")) {
+            if (!numbers[j].equals("_")) {  // a number
                 if (s.equals("s"))  // need to fill start_state matrix
-                    start_state[i][j] = -1;  // ask if it can be a legal number on the matrix ot not ... ask for 0 too (and maybe i can do nothing in that case
-                else  // s is "g", need to fill goal_state matrix
-                    goal_state[i][j] = -1;
-            }
-            else {  // a number
-                if (s.equals("s"))  // start
                     start_state[i][j] = Integer.parseInt(numbers[j]);
-                else  // goal
+                else  // s is "g", need to fill goal_state matrix
                     goal_state[i][j] = Integer.parseInt(numbers[j]);
-            }
+            }  // if it's a "_", will remain 0 on matrix[i][j]
         }
         /*if (s.equals("s")) print_matrix(start_state);
         else print_matrix(goal_state);*/
