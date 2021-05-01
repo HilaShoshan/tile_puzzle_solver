@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class BFS implements Algorithm {
@@ -20,9 +21,9 @@ public class BFS implements Algorithm {
         L_queue.add(state);
         L_hash.put(state.getBoard(), state);
         while (!L_queue.isEmpty()) {
-            state = L_queue.peek();  // return the element at the head the queue
+            state = L_queue.remove();  // remove and return the element at the head the queue
             C.put(state.getBoard(), state);
-            List<Point> emptyCells = findEmptyCells();  // have to be a list of one or two cells
+            ArrayList<Point> emptyCells = findEmptyCells();  // have to be a list of one or two cells
             if (emptyCells.size() == 2) {  // two empty cells
                 Point first = emptyCells.get(0);
                 Point second = emptyCells.get(1);
@@ -44,7 +45,23 @@ public class BFS implements Algorithm {
             for (Point p : emptyCells) {
                 for (char c : operators) {  // check moving one item
                     temp = state.operator(c, p.getI(), p.getJ());
-                    if (temp != null) NUM++;
+                    /*System.out.println("state");
+                    print_matrix(state.getBoard());
+                    print_actions(state.getPrevActions());
+                    print_organs(state.getPrevOrgans());*/
+                    if (temp != null) {
+                        NUM++;
+                        /*System.out.println("temp");
+                        print_matrix(temp.getBoard());
+                        print_actions(temp.getPrevActions());
+                        print_organs(temp.getPrevOrgans());*/
+                    }
+                    /*else {
+                        System.out.println("temp\nNULL");
+                    }
+                    System.out.println("_____________________________________________");*/
+
+                    // System.out.println(NUM);
                     if (Check()) return;
                 }
             }
@@ -68,8 +85,8 @@ public class BFS implements Algorithm {
      * returns a list of points (pairs in the form (i,j)).
      * @return
      */
-    private List<Point> findEmptyCells() {
-        List<Point> result = new ArrayList<>();
+    private ArrayList<Point> findEmptyCells() {
+        ArrayList<Point> result = new ArrayList<>();
         for (int i = 0; i < state.getBoard().length; i++) {
             for (int j = 0; j < state.getBoard()[0].length; j++) {
                 if (state.getBoard()[i][j] == 0) {  // find an empty cell
@@ -99,5 +116,26 @@ public class BFS implements Algorithm {
     @Override
     public int getNUM() {
         return NUM;
+    }
+
+    public static void print_matrix(int[][] mat) {
+        for (int[] row : mat)
+            System.out.println(Arrays.toString(row));
+    }
+
+    public static void print_actions(ArrayList<Character> list) {
+        System.out.println("prevActions:");
+        for (char c : list) {
+            System.out.print(c + " ");
+        }
+        System.out.println();
+    }
+
+    public static void print_organs(ArrayList<String> list) {
+        System.out.println("prevOrgans:");
+        for (String s : list) {
+            System.out.print(s + " ");
+        }
+        System.out.println();
     }
 }

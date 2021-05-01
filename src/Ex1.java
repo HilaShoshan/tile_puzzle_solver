@@ -7,16 +7,6 @@ public class Ex1 {
         InitGame game = new InitGame();  // create a game from input.txt file
         long startTime, estimatedTime;  // counting the running time of the algorithm
 
-        /*System.out.println("Start: ");
-        int[][] start_state = game.getStart_state();
-        print_matrix(start_state);
-
-        System.out.println();
-        System.out.println("Goal: ");
-        int[][] goal_state = game.getGoal_state();
-        print_matrix(goal_state);
-         */
-
         String algorithm = game.getAlgorithm();
         Algorithm algo;
         startTime = System.currentTimeMillis();
@@ -51,18 +41,20 @@ public class Ex1 {
             writer.println("no path");
         } else {
             for (int i = 0; i < state.getPrevActions().size(); i++) {
-                writer.print(state.getPrevOrgans().get(i)+state.getPrevActions().get(i)+'-');
-                
+                //System.out.println("organ: " + state.getPrevOrgans().get(i));
+                //System.out.println("action: " + state.getPrevActions().get(i));
+                writer.print(state.getPrevOrgans().get(i)+state.getPrevActions().get(i));
+                if (i != state.getPrevActions().size()-1)  // not the last one
+                    writer.print('-');
             }
+            writer.println();
         }
-
-        writer.println("The first line");
-        writer.println("The second line");
+        writer.println("Num: " + algo.getNUM());
+        writer.println("Cost: " + state.getCost());
+        if (game.getTime()) {
+            writer.println(estimatedTime/1000);
+        }
+        if (game.getOpen()) {}
         writer.close();
-    }
-
-    public static void print_matrix(int[][] mat) {
-        for (int[] row : mat)
-            System.out.println(Arrays.toString(row));
     }
 }
