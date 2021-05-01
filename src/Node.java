@@ -6,6 +6,7 @@ public class Node {
     private int[][] board;
     private ArrayList<Node> path = new ArrayList<>();
     private int cost = 0;
+    private String prevAction; 
 
     public Node(int[][] board) {
         this.board = board;
@@ -23,53 +24,61 @@ public class Node {
     }
 
     /**
-     * Move the number on (i,j) location according to the action received (left/up/right/down) if it's possible.
+     * Move the numbers around the empty cell (i,j) according to the action received (left/up/right/down) if it's possible.
      * @param c is a char representing the action to do.
      *          Can be one of: 'l'=left | 'u'=up | 'r'=right | 'd'=down
-     * @param i is the row of the organ in the matrix we want to move.
+     * @param i is the row of the empty cell.
      * @param j is the column of it.
      * @return a new node that represents the new state,
-     * or null if it's impossible (exceeding the matrix limits or non-empty cell where you want to move the node).
+     * or null if it's impossible (exceeding the matrix limits).
      */
     public Node operator(char c, int i, int j) {
-        int new_i, new_j;
-        int[][] new_board = new int[board.length][board[0].length];  // create a new board
+        int x, y;  // the location of the organ on matrix we want to move
         switch (c) {
             case 'l':
-                new_i = i;
-                new_j = j-1;
+                x = i;
+                y = j+1;
                 break;
             case 'u':
-                new_i = i-1;
-                new_j = j;
+                x = i+1;
+                y = j;
                 break;
             case 'r':
-                new_i = i;
-                new_j = j+1;
+                x = i;
+                y = j-1;
                 break;
             case 'd':
-                new_i = i+1;
-                new_j = j;
+                x = i-1;
+                y = j;
                 break;
             default:
                 return null;
         }
-        new_board = move(i, j, new_i, new_j, new_board);
+        int[][] new_board = move(i, j, x, y);
         if (new_board == null) return null;
         Node newNode = new Node(new_board, cost+5, ID+1, path);  // the cost for moving one value is 5
         newNode.addToPath(this);
         return newNode;
     }
 
-    private int[][] move(int i, int j, int new_i, int new_j, int[][] new_board) {
-        if (i >= board.length || j >= board[0].length)  // exceeding the matrix limits
+    /**
+     * move (if possible) the organ to the empty cell on the board
+     * @param i = the row of the empty cell (to move there)
+     * @param j = the column of the empty cell
+     * @param x = the row of the organ we want to move (some organ around the empty cell)
+     * @param y = the column of the organ we want to move
+     * @return the new board or null if it's impossible
+     */
+    private int[][] move(int i, int j, int x, int y) {
+        int[][] new_board = new int[board.length][board[0].length];  // create a new board
+        if (x >= board.length || y >= board[0].length || x <= 0 || y <= 0)  // exceeding the matrix limits
             return null;
-        if (board[new_i][new_j] != 0)  // not an empty cell --> can't move
-            return null;
-        for (int x = 0; x < board.length; x++)
-            new_board[x] = board[x].clone();  // copy the board to the new_board
-        new_board[new_i][new_j] = board[i][j];  // move the organ to it's new place
-        new_board[i][j] = 0;  // the old cell is empty now
+        if (board[x][y] == 0)  // is empty cell too
+            return null;  // we can not really move it to the empty place (dont change the board)
+        for (int row = 0; row < board.length; x++)
+            new_board[row] = board[row].clone();  // copy the board to the new_board
+        new_board[i][j] = board[x][y];  // move the organ to it's new place
+        new_board[x][y] = 0;  // the old cell is empty now
         return new_board;
     }
 

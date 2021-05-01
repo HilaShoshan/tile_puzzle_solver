@@ -1,8 +1,10 @@
+import java.util.ArrayList;
+
 public class Astar extends Algorithm {
 
     public Astar(InitGame game) {}
 
-    public int[] run() {
+    public ArrayList<Node> run() {
         return null;
     }
 }

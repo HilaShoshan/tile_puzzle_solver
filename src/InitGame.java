@@ -16,6 +16,9 @@ public class InitGame {
     private int N, M;  // the size of the board (N = num of rows, M = num of columns).
     private int start_state[][], goal_state[][];  // The initial state and the final state of the board.
 
+    private int MAX = 0;
+    private boolean oneEmpty;
+
     // constructor
     public InitGame() throws Exception {
         File file = new File("input.txt");  // read input.txt
@@ -56,6 +59,9 @@ public class InitGame {
             }
             row++;
         }
+        if (MAX == N*M-1) oneEmpty = true;
+        else if (MAX == N*M-2) oneEmpty = false;
+        else throw new Exception("board is illegal");
     }
 
     private void fill_matrix(String line, int i, String s) {
@@ -63,10 +69,13 @@ public class InitGame {
         String[] numbers = line.split(",");  // get an array of all the numbers on this row of the board
         for (int j = 0; j < M; j++) {  // fill the columns
             if (!numbers[j].equals("_")) {  // a number
+                int num = Integer.parseInt(numbers[j]);
+                if (num > MAX)
+                    MAX = num;
                 if (s.equals("s"))  // need to fill start_state matrix
-                    start_state[i][j] = Integer.parseInt(numbers[j]);
+                    start_state[i][j] = num;
                 else  // s is "g", need to fill goal_state matrix
-                    goal_state[i][j] = Integer.parseInt(numbers[j]);
+                    goal_state[i][j] = num;
             }  // if it's a "_", will remain 0 on matrix[i][j]
         }
         /*if (s.equals("s")) print_matrix(start_state);
