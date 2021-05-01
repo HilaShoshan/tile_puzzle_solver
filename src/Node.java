@@ -1,11 +1,25 @@
+import java.util.ArrayList;
+
 public class Node {
 
+    private int ID = 0;
     private int[][] board;
-    private int[] path;
-    // cost
+    private ArrayList<Node> path = new ArrayList<>();
+    private int cost = 0;
 
     public Node(int[][] board) {
         this.board = board;
+    }
+
+    public Node(int[][] board, int cost, int id, ArrayList<Node> path) {
+        this.board = board;
+        this.cost = cost;
+        this.ID = id;
+        this.path = path; 
+    }
+
+    public void addToPath(Node n) {
+        this.path.add(n); 
     }
 
     /**
@@ -15,7 +29,7 @@ public class Node {
      * @param i is the row of the organ in the matrix we want to move.
      * @param j is the column of it.
      * @return a new node that represents the new state,
-     * or null if it's impossible (exceeding the matrix limits or non-empty cell where you want to move the node),
+     * or null if it's impossible (exceeding the matrix limits or non-empty cell where you want to move the node).
      */
     public Node operator(char c, int i, int j) {
         int new_i, new_j;
@@ -41,7 +55,10 @@ public class Node {
                 return null;
         }
         new_board = move(i, j, new_i, new_j, new_board);
-        return new Node(new_board);
+        if (new_board == null) return null;
+        Node newNode = new Node(new_board, cost+5, ID+1, path);  // the cost for moving one value is 5
+        newNode.addToPath(this);
+        return newNode;
     }
 
     private int[][] move(int i, int j, int new_i, int new_j, int[][] new_board) {
@@ -77,11 +94,27 @@ public class Node {
         this.board = board;
     }
 
-    public int[] getPath() {
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public ArrayList<Node> getPath() {
         return path;
     }
 
-    public void setPath(int[] path) {
+    public void setPath(ArrayList<Node> path) {
         this.path = path;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }

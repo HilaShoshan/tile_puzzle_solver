@@ -38,6 +38,8 @@ public class Ex1 {
                 algo = new DFBnB(game);
                 algo.run();
                 break;
+            default:
+                throw new Exception("Invalid Input");
         }
     }
 
