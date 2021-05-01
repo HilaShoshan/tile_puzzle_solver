@@ -1,15 +1,12 @@
 import java.util.*;
 
-public class Algorithm {
-
-    private Node goal;
-    private int time;  // int?
-    private int cost;  // ?
-    private char prev_operator;  // the previous operator we've done, so we won't do the opposite operator just after it.
+public interface Algorithm {
 
     public char[] operators = new char[]{'l', 'u', 'r', 'd'};
+    public char[] lr = new char[]{'l', 'r'};  // first left then right
+    public char[] ud = new char[]{'u', 'd'};  // first up then down
 
-    public ArrayList<Node> run() {
-        return null;
-    }
+    public void run();
+    public Node getState();
+    public int getNUM();
 }

@@ -1,10 +1,19 @@
 import java.util.ArrayList;
 
-public class Astar extends Algorithm {
+public class Astar implements Algorithm {
 
     public Astar(InitGame game) {}
 
-    public ArrayList<Node> run() {
+    @Override
+    public void run() {}
+
+    @Override
+    public Node getState() {
         return null;
+    }
+
+    @Override
+    public int getNUM() {
+        return 0;
     }
 }

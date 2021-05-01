@@ -1,10 +1,19 @@
 import java.util.ArrayList;
 
-public class DFBnB extends Algorithm {
+public class DFBnB implements Algorithm {
 
     public DFBnB(InitGame game) {}
 
-    public ArrayList<Node> run() {
+    @Override
+    public void run() {}
+
+    @Override
+    public Node getState() {
         return null;
+    }
+
+    @Override
+    public int getNUM() {
+        return 0;
     }
 }

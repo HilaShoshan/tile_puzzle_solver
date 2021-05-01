@@ -1,10 +1,17 @@
-import java.util.ArrayList;
-
-public class IDAstar extends Algorithm {
+public class IDAstar implements Algorithm {
 
     public IDAstar(InitGame game) {}
 
-    public ArrayList<Node> run() {
+    @Override
+    public void run() {}
+
+    @Override
+    public Node getState() {
         return null;
+    }
+
+    @Override
+    public int getNUM() {
+        return 0;
     }
 }
