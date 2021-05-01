@@ -41,8 +41,6 @@ public class Ex1 {
             writer.println("no path");
         } else {
             for (int i = 0; i < state.getPrevActions().size(); i++) {
-                //System.out.println("organ: " + state.getPrevOrgans().get(i));
-                //System.out.println("action: " + state.getPrevActions().get(i));
                 writer.print(state.getPrevOrgans().get(i)+state.getPrevActions().get(i));
                 if (i != state.getPrevActions().size()-1)  // not the last one
                     writer.print('-');
@@ -52,7 +50,7 @@ public class Ex1 {
         writer.println("Num: " + algo.getNUM());
         writer.println("Cost: " + state.getCost());
         if (game.getTime()) {
-            writer.println(estimatedTime/1000);
+            writer.println(estimatedTime/1000 + " seconds");
         }
         if (game.getOpen()) {}
         writer.close();

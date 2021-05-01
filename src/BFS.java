@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class BFS implements Algorithm {
@@ -45,23 +44,8 @@ public class BFS implements Algorithm {
             for (Point p : emptyCells) {
                 for (char c : operators) {  // check moving one item
                     temp = state.operator(c, p.getI(), p.getJ());
-                    /*System.out.println("state");
-                    print_matrix(state.getBoard());
-                    print_actions(state.getPrevActions());
-                    print_organs(state.getPrevOrgans());*/
-                    if (temp != null) {
-                        NUM++;
-                        /*System.out.println("temp");
-                        print_matrix(temp.getBoard());
-                        print_actions(temp.getPrevActions());
-                        print_organs(temp.getPrevOrgans());*/
-                    }
-                    /*else {
-                        System.out.println("temp\nNULL");
-                    }
-                    System.out.println("_____________________________________________");*/
-
-                    // System.out.println(NUM);
+                    if (temp != null) NUM++;
+                    System.out.println(NUM);
                     if (Check()) return;
                 }
             }

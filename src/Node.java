@@ -68,11 +68,7 @@ public class Node {
         if (new_board == null) return null;
         Node newNode = new Node(new_board, cost+5, copyPath(path), copyActions(prevActions), copyOrgans(prevOrgans));
                                 // the cost for moving one value is 5
-        System.out.println("state: " + prevActions.size());
-        System.out.println("new: " + newNode.getPrevActions().size());
         newNode.addPrevAction(c);
-        System.out.println("state after: " + prevActions.size());
-        System.out.println("new after: " + newNode.getPrevActions().size());
         newNode.addPrevOrgan(Integer.toString(board[x][y]));
         newNode.addToPath(this);
         return newNode;
@@ -87,15 +83,6 @@ public class Node {
      * @return the new board or null if it's impossible
      */
     private int[][] move(int i, int j, int x, int y, char action, int[][] board) {
-        /*print_matrix(board);
-        System.out.println("action: " + action);
-        System.out.println(i + " " + j + " " + x + " " + y);
-        if (!prevActions.isEmpty()) {
-            System.out.println("last action: " + prevActions.get(prevActions.size() - 1));
-            System.out.println("last organ: " + prevOrgans.get(prevOrgans.size() - 1));
-        }
-        System.out.println(); */
-
         int[][] new_board = new int[board.length][board[0].length];  // create a new board
         if (x >= board.length || y >= board[0].length || x <= 0 || y <= 0)  // exceeding the matrix limits
             return null;
