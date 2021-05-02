@@ -3,6 +3,8 @@ import java.util.Arrays;
 
 public class Node {
 
+    private static int NUM = 0;
+
     private int[][] board;
     private ArrayList<Node> path = new ArrayList<>();  // the path to it (not including itself)
     private int cost = 0;
@@ -10,10 +12,12 @@ public class Node {
     private ArrayList<String> prevOrgans = new ArrayList<String>();  // to what organs (numbers) we did it.
 
     public Node(int[][] board) {
+        NUM++;
         this.board = board;
     }
 
     public Node(int[][] board, int cost, ArrayList<Node> path, ArrayList<Character> prevActions, ArrayList<String> prevOrgans) {
+        NUM++;
         this.board = board;
         this.cost = cost;
         this.path = path;
@@ -60,8 +64,6 @@ public class Node {
             case 'D':
                 x = i - 1;
                 y = j;
-                print_matrix(this.board);
-                System.out.println("i j x y: " + i + " " + j + " " + x + " " + y);
                 break;
             default:
                 return null;
@@ -86,19 +88,12 @@ public class Node {
      */
     private int[][] move(int i, int j, int x, int y, char action, int[][] board) {
         int[][] new_board = new int[board.length][board[0].length];  // create a new board
-        if (x >= board.length || y >= board[0].length || x < 0 || y < 0) {// exceeding the matrix limits
-            if (action == 'D') System.out.println("move: limits problem");
+        if (x >= board.length || y >= board[0].length || x < 0 || y < 0) // exceeding the matrix limits
             return null;
-        }
-        if (board[x][y] == 0) {// is empty cell too
-            if (action == 'D') System.out.println("move: empty cell too");
+        if (board[x][y] == 0)  // is empty cell too
             return null;  // we can not really move it to the empty place (dont change the board)
-        }
-        if (!prevActions.isEmpty() && isContrary(Integer.toString(board[x][y]), action)) {// it's not the first action and it's Contrary
-            if (action == 'D') System.out.println("move: contrary");
+        if (!prevActions.isEmpty() && isContrary(Integer.toString(board[x][y]), action))  // it's not the first action and it's Contrary
             return null;
-        }
-        if (action == 'D') System.out.println("move: fine!");
         for (int row = 0; row < board.length; row++)
             for (int col = 0; col < board[0].length; col++)
                 new_board[row][col] = board[row][col];  // copy the board to the new_board
@@ -217,6 +212,10 @@ public class Node {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public static int getNUM() {
+        return NUM;
     }
 
     public ArrayList<Character> getPrevActions() {

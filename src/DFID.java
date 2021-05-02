@@ -9,9 +9,4 @@ public class DFID implements Algorithm {
     public Node getState() {
         return null;
     }
-
-    @Override
-    public int getNUM() {
-        return 0;
-    }
 }

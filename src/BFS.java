@@ -2,8 +2,9 @@ import java.util.*;
 
 public class BFS implements Algorithm {
 
-    private Node state, temp, goal_state;
-    private int NUM = 0;
+    private Node state, temp;
+    private int[][] goal_matrix;
+    private boolean open;
 
     // data structures for the algorithm
     private Queue<Node> L_queue = new LinkedList<>();
@@ -12,18 +13,19 @@ public class BFS implements Algorithm {
 
     public BFS(InitGame game) {  // maybe change the given param!!
         this.state = new Node(game.getStart_state());
-        this.goal_state = new Node(game.getGoal_state());
+        this.goal_matrix = game.getGoal_state();
+        this.open = game.getOpen();
     }
 
     @Override
     public void run() {
         L_queue.add(state);
         L_hash.put(state.getBoard(), state);
+        int i = 0;
         while (!L_queue.isEmpty()) {
+            if (open) print_openList(i);
             state = L_queue.remove();  // remove and return the element at the head the queue
-            /*System.out.println("_____state______");
-            print_matrix(state.getBoard());
-            System.out.println("________________");*/
+            L_hash.remove(state.getBoard());
             C.put(state.getBoard(), state);
             ArrayList<Point> emptyCells = findEmptyCells();  // have to be a list of one or two cells
             if (emptyCells.size() == 2) {  // two empty cells
@@ -32,33 +34,33 @@ public class BFS implements Algorithm {
                 if (Math.abs(first.getI()-second.getI())==1 && first.getJ() == second.getJ()) {  // one below the other
                     for (char c : lr) {
                         temp = state.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
-                        if (temp != null) NUM++;
-                        if (Check()) return;  // Done (found the goal)
+                        if (CheckAndAdd()) return;  // Done (found the goal)
                     }
                 }
                 if (first.getI() == second.getI() && Math.abs(first.getJ()-second.getJ())==1) {  // one next the other
                     for (char c : ud) {
                         temp = state.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
-                        if (temp != null) NUM++;
-                        if (Check()) return;
+                        if (CheckAndAdd()) return;
                     }
                 }
             }
             for (Point p : emptyCells) {
                 for (char c : operators) {  // check moving one item
                     temp = state.operator(c, p.getI(), p.getJ());
-                    if (temp != null) {
-                        //print_matrix(temp.getBoard());
-                        NUM++;
-                    }
-                    //System.out.println("NUM:" + NUM);
-                    if (Check()) return;
+                    if (CheckAndAdd()) return;
                 }
             }
+            i++;
         }
     }
 
-    private boolean Check() {
+    /**
+     * helper function for 'run' method.
+     * checks if the temp board that returns from 'operator' is not null and should be added to the queue
+     * also checks if it's the goal, and if so - determines state = temp
+     * @return true if we done (the goal was found), false else.
+     */
+    private boolean CheckAndAdd() {
         if (temp != null && !C.containsKey(temp.getBoard()) && !L_hash.containsKey(temp.getBoard())) {
             if (isGoal(temp.getBoard())) {
                 state = temp;
@@ -87,10 +89,15 @@ public class BFS implements Algorithm {
         return result;
     }
 
+    /**
+     * checks if a given matrix equals to the goal (private field of the class)
+     * @param board = the given matrix (some board of a new state returned from 'operator')
+     * @return false if it's noe the goal, true else.
+     */
     public boolean isGoal(int[][] board) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] != goal_state.getBoard()[i][j]) {
+                if (board[i][j] != goal_matrix[i][j]) {
                     return false;
                 }
             }
@@ -103,14 +110,18 @@ public class BFS implements Algorithm {
         return state;
     }
 
-    @Override
-    public int getNUM() {
-        return NUM;
-    }
-
     public static void print_matrix(int[][] mat) {
         for (int[] row : mat)
             System.out.println(Arrays.toString(row));
+    }
+
+    public void print_openList(int i) {
+        System.out.println("Open-List -- Iteration "+i);
+        for (int[][] key : L_hash.keySet()) {
+            print_matrix(key);
+            System.out.println();
+        }
+        System.out.println("_________________");
     }
 
     public static void print_actions(ArrayList<Character> list) {

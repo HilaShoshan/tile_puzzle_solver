@@ -8,5 +8,4 @@ public interface Algorithm {
 
     public void run();
     public Node getState();
-    public int getNUM();
 }

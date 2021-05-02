@@ -1,5 +1,4 @@
 import java.io.PrintWriter;
-import java.util.Arrays;
 
 public class Ex1 {
     public static void main(String[] args) throws Exception {
@@ -12,6 +11,7 @@ public class Ex1 {
         startTime = System.currentTimeMillis();
         switch (algorithm) {
             case "BFS":
+                //game.setOpen(true);
                 algo = new BFS(game);
                 algo.run();
                 break;
@@ -47,12 +47,11 @@ public class Ex1 {
             }
             writer.println();
         }
-        writer.println("Num: " + algo.getNUM());
+        writer.println("Num: " + state.getNUM());
         writer.println("Cost: " + state.getCost());
         if (game.getTime()) {
             writer.println(estimatedTime/1000 + " seconds");
         }
-        if (game.getOpen()) {}
         writer.close();
     }
 }
