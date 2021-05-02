@@ -60,6 +60,8 @@ public class Node {
             case 'D':
                 x = i - 1;
                 y = j;
+                print_matrix(this.board);
+                System.out.println("i j x y: " + i + " " + j + " " + x + " " + y);
                 break;
             default:
                 return null;
@@ -84,12 +86,19 @@ public class Node {
      */
     private int[][] move(int i, int j, int x, int y, char action, int[][] board) {
         int[][] new_board = new int[board.length][board[0].length];  // create a new board
-        if (x >= board.length || y >= board[0].length || x <= 0 || y <= 0)  // exceeding the matrix limits
+        if (x >= board.length || y >= board[0].length || x < 0 || y < 0) {// exceeding the matrix limits
+            if (action == 'D') System.out.println("move: limits problem");
             return null;
-        if (board[x][y] == 0)  // is empty cell too
+        }
+        if (board[x][y] == 0) {// is empty cell too
+            if (action == 'D') System.out.println("move: empty cell too");
             return null;  // we can not really move it to the empty place (dont change the board)
-        if (!prevActions.isEmpty() && isContrary(Integer.toString(board[x][y]), action))  // it's not the first action and it's Contrary
+        }
+        if (!prevActions.isEmpty() && isContrary(Integer.toString(board[x][y]), action)) {// it's not the first action and it's Contrary
+            if (action == 'D') System.out.println("move: contrary");
             return null;
+        }
+        if (action == 'D') System.out.println("move: fine!");
         for (int row = 0; row < board.length; row++)
             for (int col = 0; col < board[0].length; col++)
                 new_board[row][col] = board[row][col];  // copy the board to the new_board

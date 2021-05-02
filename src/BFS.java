@@ -21,6 +21,9 @@ public class BFS implements Algorithm {
         L_hash.put(state.getBoard(), state);
         while (!L_queue.isEmpty()) {
             state = L_queue.remove();  // remove and return the element at the head the queue
+            /*System.out.println("_____state______");
+            print_matrix(state.getBoard());
+            System.out.println("________________");*/
             C.put(state.getBoard(), state);
             ArrayList<Point> emptyCells = findEmptyCells();  // have to be a list of one or two cells
             if (emptyCells.size() == 2) {  // two empty cells
@@ -44,8 +47,11 @@ public class BFS implements Algorithm {
             for (Point p : emptyCells) {
                 for (char c : operators) {  // check moving one item
                     temp = state.operator(c, p.getI(), p.getJ());
-                    if (temp != null) NUM++;
-                    System.out.println(NUM);
+                    if (temp != null) {
+                        //print_matrix(temp.getBoard());
+                        NUM++;
+                    }
+                    //System.out.println("NUM:" + NUM);
                     if (Check()) return;
                 }
             }
