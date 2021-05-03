@@ -125,18 +125,6 @@ public class Node {
         return false;
     }
 
-    private int[][] move2(int i1, int j1, int x1, int y1, int i2, int j2, int x2, int y2, char action) {
-        String str1 = Integer.toString(board[x1][y1])+'&'+Integer.toString(board[x2][y2]);
-        String str2 = Integer.toString(board[x2][y2])+'&'+Integer.toString(board[x1][y1]);
-        String last_organs = prevOrgans.get(prevOrgans.size()-1);
-        if ((str1.equals(last_organs) || str2.equals(last_organs)) && isContraryAction(action))
-            return null;
-        int[][] new_board = move(i1, j1, x1, y1, action, this.board);
-        if (new_board == null) return null;
-        new_board = move(i2, j2, x2, y2, action, new_board);
-        return new_board;
-    }
-
     /**
      * Move two adjacent organs according to the action received.
      * @param c = the action to do.
@@ -188,6 +176,24 @@ public class Node {
         newNode.addPrevOrgan(Integer.toString(board[x1][y1])+'&'+Integer.toString(board[x2][y2]));
         newNode.addToPath(this);
         return newNode;
+    }
+
+    private int[][] move2(int i1, int j1, int x1, int y1, int i2, int j2, int x2, int y2, char action) {
+        if (x1 >= board.length || y1 >= board[0].length || x1 < 0 || y1 < 0
+            || x2 >= board.length || y2 >= board[0].length || x2 < 0 || y2 < 0) // exceeding the matrix limits
+            return null;
+        String str1 = Integer.toString(board[x1][y1])+'&'+Integer.toString(board[x2][y2]);
+        String str2 = Integer.toString(board[x2][y2])+'&'+Integer.toString(board[x1][y1]);
+        String last_organs;
+        if (!prevActions.isEmpty()) {
+            last_organs = prevOrgans.get(prevOrgans.size() - 1);
+            if ((str1.equals(last_organs) || str2.equals(last_organs)) && isContraryAction(action))
+                return null;
+        }
+        int[][] new_board = move(i1, j1, x1, y1, action, this.board);
+        if (new_board == null) return null;
+        new_board = move(i2, j2, x2, y2, action, new_board);
+        return new_board;
     }
 
     public int[][] getBoard() {
@@ -250,5 +256,16 @@ public class Node {
     public static void print_matrix(int[][] mat) {
         for (int[] row : mat)
             System.out.println(Arrays.toString(row));
+    }
+
+    public String toString() {
+        String s = "";
+        for (int[] x : board) {
+            for (int y : x) {
+                s += y + " ";
+            }
+            s+= "\n";
+        }
+        return s;
     }
 }
