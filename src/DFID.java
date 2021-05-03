@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -5,7 +6,7 @@ import java.util.HashMap;
  */
 public class DFID implements Algorithm {
 
-    private Node state;
+    private Node state, temp;
     private int[][] goal_matrix;
     private boolean open;
 
@@ -33,6 +34,11 @@ public class DFID implements Algorithm {
      * there is no path), and false if it stopped because of the limit.
      */
     private boolean limited_DFS(int limit) {
+        if (HelperFunctions.isGoal(goal_matrix, state.getBoard())) return true;
+        if (limit == 0) return false;  // cutoff
+        H.put(state.toString(), state);
+        boolean isCutoff = false;
+        ArrayList<Point> emptyCells = HelperFunctions.findEmptyCells(state.getBoard());
         return false;
     }
 

@@ -41,7 +41,7 @@ public class Ex1 {
             writer.println("no path");
         } else {
             for (int i = 0; i < state.getPrevActions().size(); i++) {
-                writer.print(state.getPrevOrgans().get(i)+state.getPrevActions().get(i));
+                writer.print(state.getPrevItems().get(i)+state.getPrevActions().get(i));
                 if (i != state.getPrevActions().size()-1)  // not the last one
                     writer.print('-');
             }

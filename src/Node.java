@@ -1,5 +1,5 @@
+import javax.swing.text.html.HTMLEditorKit;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Node {
 
@@ -9,20 +9,20 @@ public class Node {
     private ArrayList<Node> path = new ArrayList<>();  // the path to it (not including itself)
     private int cost = 0;
     private ArrayList<Character> prevActions = new ArrayList<Character>();  // the actions we made
-    private ArrayList<String> prevOrgans = new ArrayList<String>();  // to what organs (numbers) we did it.
+    private ArrayList<String> prevItems = new ArrayList<String>();  // to what items (numbers) we did it.
 
     public Node(int[][] board) {
         NUM++;
         this.board = board;
     }
 
-    public Node(int[][] board, int cost, ArrayList<Node> path, ArrayList<Character> prevActions, ArrayList<String> prevOrgans) {
+    public Node(int[][] board, int cost, ArrayList<Node> path, ArrayList<Character> prevActions, ArrayList<String> prevItems) {
         NUM++;
         this.board = board;
         this.cost = cost;
         this.path = path;
         this.prevActions = prevActions;
-        this.prevOrgans = prevOrgans;
+        this.prevItems = prevItems;
     }
 
     public void addToPath(Node n) {
@@ -33,9 +33,32 @@ public class Node {
         this.prevActions.add(c);
     }
 
-    public void addPrevOrgan(String s) {
-        this.prevOrgans.add(s);
+    public void addPrevitem(String s) {
+        this.prevItems.add(s);
     }
+
+    /*public Node iterateOperators(ArrayList<Point> emptyCells) {
+        if (emptyCells.size() == 2) {  // two empty cells
+            Point first = emptyCells.get(0);
+            Point second = emptyCells.get(1);
+            if (Math.abs(first.getI()-second.getI())==1 && first.getJ() == second.getJ()) {  // one below the other
+                for (char c : Algorithm.lr) {
+                    return this.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
+                }
+            }
+            if (first.getI() == second.getI() && Math.abs(first.getJ()-second.getJ())==1) {  // one next the other
+                for (char c : Algorithm.ud) {
+                    return this.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
+                }
+            }
+        }
+        for (Point p : emptyCells) {
+            for (char c : Algorithm.operators) {  // check moving one item
+                return this.operator(c, p.getI(), p.getJ());
+            }
+        }
+        return null;
+    }*/
 
     /**
      * Move the numbers around the empty cell (i,j) according to the action received (left/up/right/down) if it's possible.
@@ -47,7 +70,7 @@ public class Node {
      * or null if it's impossible (exceeding the matrix limits).
      */
     public Node operator(char c, int i, int j) {
-        int x, y;  // the location of the organ on matrix we want to move
+        int x, y;  // the location of the item on matrix we want to move
         switch (c) {
             case 'L':
                 x = i;
@@ -70,20 +93,20 @@ public class Node {
         }
         int[][] new_board = move(i, j, x, y, c, this.board);
         if (new_board == null) return null;
-        Node newNode = new Node(new_board, cost+5, copyPath(path), copyActions(prevActions), copyOrgans(prevOrgans));
-                                // the cost for moving one value is 5
+        Node newNode = new Node(new_board, cost+5, HelperFunctions.copyPath(path),  // the cost for one-element moving is 5
+                HelperFunctions.copyActions(prevActions), HelperFunctions.copyitems(prevItems));
         newNode.addPrevAction(c);
-        newNode.addPrevOrgan(Integer.toString(board[x][y]));
+        newNode.addPrevitem(Integer.toString(board[x][y]));
         newNode.addToPath(this);
         return newNode;
     }
 
     /**
-     * move (if possible) the organ to the empty cell on the board
+     * move (if possible) the item to the empty cell on the board
      * @param i = the row of the empty cell (to move there)
      * @param j = the column of the empty cell
-     * @param x = the row of the organ we want to move (some organ around the empty cell)
-     * @param y = the column of the organ we want to move
+     * @param x = the row of the item we want to move (some item around the empty cell)
+     * @param y = the column of the item we want to move
      * @return the new board or null if it's impossible
      */
     private int[][] move(int i, int j, int x, int y, char action, int[][] board) {
@@ -97,18 +120,18 @@ public class Node {
         for (int row = 0; row < board.length; row++)
             for (int col = 0; col < board[0].length; col++)
                 new_board[row][col] = board[row][col];  // copy the board to the new_board
-        new_board[i][j] = board[x][y];  // move the organ to it's new place
+        new_board[i][j] = board[x][y];  // move the item to it's new place
         new_board[x][y] = 0;  // the old cell is empty now
         return new_board;
     }
 
     private boolean isContrary(String number, char action) {
-        String last_organs = prevOrgans.get(prevOrgans.size()-1);
-        if (number.equals(last_organs) && isContraryAction(action))  // opposite action on one organ
+        String last_items = prevItems.get(prevItems.size()-1);
+        if (number.equals(last_items) && isContraryAction(action))  // opposite action on one item
             return true;
-        if (last_organs.contains("&")) {  // the last action was moving two organs together
-            String[] organs = last_organs.split("&");
-            if ((organs[0].equals(number) || organs[1].equals(number)) && isContraryAction(action)) {  // opposite action on one from two organs
+        if (last_items.contains("&")) {  // the last action was moving two items together
+            String[] items = last_items.split("&");
+            if ((items[0].equals(number) || items[1].equals(number)) && isContraryAction(action)) {  // opposite action on one from two items
                 return true;
             }
         }
@@ -126,7 +149,7 @@ public class Node {
     }
 
     /**
-     * Move two adjacent organs according to the action received.
+     * Move two adjacent items according to the action received.
      * @param c = the action to do.
      * @param i1 = the row of the first empty cell
      * @param j1 = the column of the first empty cell
@@ -171,9 +194,10 @@ public class Node {
         }
         int[][] new_board = move2(i1, j1, x1, y1, i2, j2, x2, y2, c);
         if (new_board == null) return null;
-        Node newNode = new Node(new_board, cost+costToAdd, copyPath(path), copyActions(prevActions), copyOrgans(prevOrgans));
+        Node newNode = new Node(new_board, cost+costToAdd, HelperFunctions.copyPath(path),
+                HelperFunctions.copyActions(prevActions), HelperFunctions.copyitems(prevItems));
         newNode.addPrevAction(c);
-        newNode.addPrevOrgan(Integer.toString(board[x1][y1])+'&'+Integer.toString(board[x2][y2]));
+        newNode.addPrevitem(Integer.toString(board[x1][y1])+'&'+Integer.toString(board[x2][y2]));
         newNode.addToPath(this);
         return newNode;
     }
@@ -184,10 +208,10 @@ public class Node {
             return null;
         String str1 = Integer.toString(board[x1][y1])+'&'+Integer.toString(board[x2][y2]);
         String str2 = Integer.toString(board[x2][y2])+'&'+Integer.toString(board[x1][y1]);
-        String last_organs;
+        String last_items;
         if (!prevActions.isEmpty()) {
-            last_organs = prevOrgans.get(prevOrgans.size() - 1);
-            if ((str1.equals(last_organs) || str2.equals(last_organs)) && isContraryAction(action))
+            last_items = prevItems.get(prevItems.size() - 1);
+            if ((str1.equals(last_items) || str2.equals(last_items)) && isContraryAction(action))
                 return null;
         }
         int[][] new_board = move(i1, j1, x1, y1, action, this.board);
@@ -228,34 +252,8 @@ public class Node {
         return prevActions;
     }
 
-    public ArrayList<String> getPrevOrgans() {
-        return prevOrgans;
-    }
-
-    public ArrayList<Character> copyActions(ArrayList<Character> actions) {
-        ArrayList<Character> newActions = new ArrayList<>();
-        for (char c : actions)
-            newActions.add(c);
-        return newActions;
-    }
-
-    public ArrayList<String> copyOrgans(ArrayList<String> organs) {
-        ArrayList<String> newOrgans = new ArrayList<>();
-        for (String s : organs)
-            newOrgans.add(s);
-        return newOrgans;
-    }
-
-    public ArrayList<Node> copyPath(ArrayList<Node> path) {  // maybe should deep copy the Node itself too!!
-        ArrayList<Node> newPath = new ArrayList<>();
-        for (Node n : path)
-            newPath.add(n);
-        return newPath;
-    }
-
-    public static void print_matrix(int[][] mat) {
-        for (int[] row : mat)
-            System.out.println(Arrays.toString(row));
+    public ArrayList<String> getPrevItems() {
+        return prevItems;
     }
 
     public String toString() {
