@@ -11,7 +11,7 @@ public class BFS implements Algorithm {
     private HashMap<String, Node> L_hash = new HashMap<>(); // parallel to the queue, in order to find organs in O(1)
     private HashMap<String, Node> C = new HashMap<>();  // closeList
 
-    public BFS(InitGame game) {  // maybe change the given param!!
+    public BFS(InitGame game) {
         this.state = new Node(game.getStart_state());
         this.goal_matrix = game.getGoal_state();
         this.open = game.getOpen();
@@ -27,7 +27,7 @@ public class BFS implements Algorithm {
             System.out.println("Queue size: " + L_queue.size());
             System.out.println("Hash size: " + L_hash.size());
             System.out.println("______________________________");
-            if (open) print_openList(i);
+            if (open) HelperFunctions.print_openList(L_hash, i);
             state = L_queue.remove();  // remove and return the element at the head the queue
             L_hash.remove(state.toString());
             C.put(state.toString(), state);
@@ -66,7 +66,7 @@ public class BFS implements Algorithm {
      */
     private boolean CheckAndAdd() {
         if (temp != null && !C.containsKey(temp.toString()) && !L_hash.containsKey(temp.toString())) {
-            if (isGoal(temp.getBoard())) {
+            if (HelperFunctions.isGoal(goal_matrix, temp.getBoard())) {
                 state = temp;
                 return true;
             }
@@ -93,53 +93,9 @@ public class BFS implements Algorithm {
         return result;
     }
 
-    /**
-     * checks if a given matrix equals to the goal (private field of the class)
-     * @param board = the given matrix (some board of a new state returned from 'operator')
-     * @return false if it's noe the goal, true else.
-     */
-    public boolean isGoal(int[][] board) {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] != goal_matrix[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     @Override
     public Node getState() {
         return state;
     }
 
-    public static void print_matrix(int[][] mat) {
-        for (int[] row : mat)
-            System.out.println(Arrays.toString(row));
-    }
-
-    public void print_openList(int i) {
-        System.out.println("Open-List -- Iteration "+i);
-        for (String key : L_hash.keySet()) {
-            System.out.println(key);
-        }
-        System.out.println("_________________");
-    }
-
-    public static void print_actions(ArrayList<Character> list) {
-        System.out.println("prevActions:");
-        for (char c : list) {
-            System.out.print(c + " ");
-        }
-        System.out.println();
-    }
-
-    public static void print_organs(ArrayList<String> list) {
-        System.out.println("prevOrgans:");
-        for (String s : list) {
-            System.out.print(s + " ");
-        }
-        System.out.println();
-    }
 }

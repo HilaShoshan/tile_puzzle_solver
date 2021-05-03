@@ -1,5 +1,5 @@
-BFS
-with time
+A*
+no time
 no open
 3x3
 1,_,4
