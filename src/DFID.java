@@ -10,8 +10,9 @@ public class DFID implements Algorithm {
     private int[][] goal_matrix;
     private boolean open;
 
-    // data structures for the algorithm
+    // data for the algorithm
     private HashMap<String, Node> H; // saves the vertices on the current path - for the loop avoidance
+    private int depth = 1;  // the limit for the Limited_DFS
 
     enum Result {
         FOUND,
@@ -27,7 +28,6 @@ public class DFID implements Algorithm {
 
     @Override
     public void run() {
-        int depth = 1;  // the limit for the Limited_DFS
         while (depth > 0) {  // infinite loop
             H = new HashMap<>();
             if (limited_DFS(state, depth, H) != Result.CUTOFF) return;
@@ -55,31 +55,22 @@ public class DFID implements Algorithm {
         if (emptyCells.size() == 2) {  // two empty cells
             Point first = emptyCells.get(0);
             Point second = emptyCells.get(1);
-            if (HelperFunctions.isAbove(first, second)) {  // one below the other
-                for (char c : lr) {
+            char[] operatorsToTry = null;
+            if (HelperFunctions.isAbove(first, second)) operatorsToTry = lr;
+            else if (HelperFunctions.isNext(first, second)) operatorsToTry = ud;
+            if (operatorsToTry != null) {  // the empty cells in the matrix are adjacent to each other.
+                for (char c : operatorsToTry) {
                     g = n.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
                     if (g != null) {
                         if (Hash.containsKey(g.toString())) continue;
                         //else g.setFather(n);
-                        result = limited_DFS(g, limit-1, Hash);
+                        result = limited_DFS(g, limit - 1, Hash);
                         if (result == Result.CUTOFF) isCutoff = true;
                         else if (result != Result.FAILED) return result;
                     }
                 }
             }
-            if (HelperFunctions.isNext(first, second)) {  // one next the other
-                for (char c : ud) {
-                    g = n.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
-                    if (g != null) {
-                        if (Hash.containsKey(g.toString())) continue;
-                        //else g.setFather(n);
-                        result = limited_DFS(g, limit-1, Hash);
-                        if (result == Result.CUTOFF) isCutoff = true;
-                        else if (result != Result.FAILED) return result;
-                    }
-                }
-            }
-        }   // not relevant to input.txt
+        }
         for (Point p : emptyCells) {
             for (char c : operators) {  // check moving one item
                 g = n.operator(c, p.getI(), p.getJ());
@@ -91,6 +82,10 @@ public class DFID implements Algorithm {
                     else if (result != Result.FAILED) return result;
                 }
             }
+        }
+        if (open) {
+            System.out.println("Recursive call number " + Integer.toString(depth-limit));
+            HelperFunctions.print_openList(Hash, depth);
         }
         Hash.remove(n.toString());
         if (isCutoff) return Result.CUTOFF;

@@ -11,11 +11,12 @@ public class Ex1 {
         startTime = System.currentTimeMillis();
         switch (algorithm) {
             case "BFS":
-                //game.setOpen(true);
                 algo = new BFS(game);
                 algo.run();
                 break;
             case "DFID":
+                game.setOpen(true);
+                game.setTime(true);
                 algo = new DFID(game);
                 algo.run();
                 break;
