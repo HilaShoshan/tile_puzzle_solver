@@ -1,4 +1,4 @@
-BFS
+DFID
 with time
 no open
 3x4

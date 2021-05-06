@@ -10,6 +10,7 @@ public class Node {
     private int cost = 0;
     private ArrayList<Character> prevActions = new ArrayList<Character>();  // the actions we made
     private ArrayList<String> prevItems = new ArrayList<String>();  // to what items (numbers) we did it.
+    private Node father = null;
 
     public Node(int[][] board) {
         NUM++;
@@ -254,6 +255,14 @@ public class Node {
 
     public ArrayList<String> getPrevItems() {
         return prevItems;
+    }
+
+    public Node getFather() {
+        return father;
+    }
+
+    public void setFather(Node father) {
+        this.father = father;
     }
 
     public String toString() {

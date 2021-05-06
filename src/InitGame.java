@@ -74,11 +74,6 @@ public class InitGame {
         else print_matrix(goal_state);*/
     }
 
-    private void print_matrix(int[][] mat) {
-        for (int[] row : mat)
-            System.out.println(Arrays.toString(row));
-    }
-
     public String getAlgorithm() {
         return algorithm;
     }

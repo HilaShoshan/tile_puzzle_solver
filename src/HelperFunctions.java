@@ -37,6 +37,17 @@ public class HelperFunctions {
         return result;
     }
 
+    public static boolean isAdjacent(ArrayList<Point> emptyCells) {
+        if (emptyCells.size() != 2) return false;
+        Point first = emptyCells.get(0);
+        Point second = emptyCells.get(1);
+        if ((Math.abs(first.getI()-second.getI())==1 && first.getJ() == second.getJ())  // one below the other
+            || (first.getI() == second.getI() && Math.abs(first.getJ()-second.getJ())==1)) {  // one next the other
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isAbove(Point first, Point second) {
         if (Math.abs(first.getI()-second.getI())==1 && first.getJ() == second.getJ()) {
             return true;
