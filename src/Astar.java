@@ -66,10 +66,14 @@ public class Astar implements Algorithm {
             }
             else if (L_hash.containsKey(temp.toString())) {
                 Node tempInL = L_hash.get(temp.toString());
-                int fQueue = tempInL.getCost() + Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
-                int fNew = temp.getCost() + Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
-                if (fQueue > fNew)
-                    L_hash.replace(temp.toString(), temp);
+                int fQueue = tempInL.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
+                int fNew = temp.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
+                if (fQueue > fNew) {
+                    L_hash.remove(temp.toString());  // remove tempInL from the queue
+                    L_hash.put(temp.toString(), temp);
+                    L_queue.remove(tempInL);
+                    L_queue.add(temp);
+                }
             }
         }
     }

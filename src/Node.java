@@ -1,10 +1,9 @@
-import javax.swing.text.html.HTMLEditorKit;
 import java.util.ArrayList;
 
 public class Node {
 
-    private static int NUM = 0;
-
+    private static int NUM = 0;  // counting the number of nodes created so far.
+    private int ID = 0;  // unique ID - smaller ID means that the Node is created first.
     private int[][] board;
     private ArrayList<Node> path = new ArrayList<>();  // the path to it (not including itself)
     private int cost = 0;
@@ -14,11 +13,13 @@ public class Node {
 
     public Node(int[][] board) {
         NUM++;
+        this.ID = NUM;
         this.board = board;
     }
 
     public Node(int[][] board, int cost, ArrayList<Node> path, ArrayList<Character> prevActions, ArrayList<String> prevItems) {
         NUM++;
+        this.ID = NUM;
         this.board = board;
         this.cost = cost;
         this.path = path;
@@ -263,6 +264,10 @@ public class Node {
 
     public void setFather(Node father) {
         this.father = father;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public String toString() {

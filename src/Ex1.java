@@ -50,7 +50,7 @@ public class Ex1 {
         writer.println("Num: " + state.getNUM());
         writer.println("Cost: " + state.getCost());
         if (game.getTime()) {
-            writer.println(estimatedTime/1000 + " seconds");
+            writer.println(estimatedTime/1000.0 + " seconds");
         }
         writer.close();
     }
