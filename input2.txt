@@ -1,4 +1,4 @@
-DFID
+A*
 no time
 no open
 3x3
