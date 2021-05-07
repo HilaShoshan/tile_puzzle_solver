@@ -33,7 +33,7 @@ public class Astar implements Algorithm {
         while (!L_queue.isEmpty()) {
             state = L_queue.remove();
             L_hash.remove(state.toString());
-            if (HelperFunctions.isGoal(goal_matrix, state.getBoard()));
+            if (HelperFunctions.isGoal(goal_matrix, state.getBoard())) return;
             C.put(state.toString(), state);
             ArrayList<Point> emptyCells = HelperFunctions.findEmptyCells(state.getBoard());
             if (emptyCells.size() == 2) {  // two empty cells
@@ -64,8 +64,12 @@ public class Astar implements Algorithm {
                 L_hash.put(temp.toString(), temp);
                 L_queue.add(temp);
             }
-            else if (L_hash.containsKey(temp.toString()) && L_hash.get(temp.toString()).getCost() > temp.getCost()) {
-                L_hash.replace(temp.toString(), temp);
+            else if (L_hash.containsKey(temp.toString())) {
+                Node tempInL = L_hash.get(temp.toString());
+                int fQueue = tempInL.getCost() + Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
+                int fNew = temp.getCost() + Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
+                if (fQueue > fNew)
+                    L_hash.replace(temp.toString(), temp);
             }
         }
     }
