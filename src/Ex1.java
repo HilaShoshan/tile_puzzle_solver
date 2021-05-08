@@ -15,6 +15,7 @@ public class Ex1 {
                 algo.run();
                 break;
             case "DFID":
+                game.setTime(true);
                 algo = new DFID(game);
                 algo.run();
                 break;
@@ -37,15 +38,19 @@ public class Ex1 {
         estimatedTime = System.currentTimeMillis() - startTime;
         Node state = algo.getState();
         PrintWriter writer = new PrintWriter("result.txt", "UTF-8");  // change to output.txt!!!
-        if (state.getPath().size() == 0) {
+        if (state.getFather() == null) {
             writer.println("no path");
         } else {
-            for (int i = 0; i < state.getPrevActions().size(); i++) {
-                writer.print(state.getPrevItems().get(i)+state.getPrevActions().get(i));
-                if (i != state.getPrevActions().size()-1)  // not the last one
-                    writer.print('-');
+            String path = "";
+            String toAdd;
+            Node temp = state;
+            while (temp.getFather() != null) {
+                toAdd = temp.getPrevItem() + temp.getPrevAction();
+                if (path != "") toAdd+= "-";
+                path = toAdd + path;
+                temp = temp.getFather();
             }
-            writer.println();
+            writer.println(path);
         }
         writer.println("Num: " + state.getNUM());
         writer.println("Cost: " + state.getCost());

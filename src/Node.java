@@ -5,11 +5,10 @@ public class Node {
     private static int NUM = 0;  // counting the number of nodes created so far.
     private int ID = 0;  // unique ID - smaller ID means that the Node is created first.
     private int[][] board;
-    private ArrayList<Node> path = new ArrayList<>();  // the path to it (not including itself)
     private int cost = 0;
-    private ArrayList<Character> prevActions = new ArrayList<Character>();  // the actions we made
-    private ArrayList<String> prevItems = new ArrayList<String>();  // to what items (numbers) we did it.
-    private Node father = null;
+    private char prevAction = ' ';  // what action we made to get the current state
+    private String prevItem = "";  // to what item did we do this
+    private Node father = null;  // from which node did we get the current one
 
     public Node(int[][] board) {
         NUM++;
@@ -17,26 +16,13 @@ public class Node {
         this.board = board;
     }
 
-    public Node(int[][] board, int cost, ArrayList<Node> path, ArrayList<Character> prevActions, ArrayList<String> prevItems) {
+    public Node(int[][] board, int cost, char prevAction, String prevItem) {
         NUM++;
         this.ID = NUM;
         this.board = board;
         this.cost = cost;
-        this.path = path;
-        this.prevActions = prevActions;
-        this.prevItems = prevItems;
-    }
-
-    public void addToPath(Node n) {
-        this.path.add(n); 
-    }
-
-    public void addPrevAction(char c) {
-        this.prevActions.add(c);
-    }
-
-    public void addPrevitem(String s) {
-        this.prevItems.add(s);
+        this.prevAction = prevAction;
+        this.prevItem = prevItem;
     }
 
     /*public Node iterateOperators(ArrayList<Point> emptyCells) {
@@ -95,11 +81,8 @@ public class Node {
         }
         int[][] new_board = move(i, j, x, y, c, this.board);
         if (new_board == null) return null;
-        Node newNode = new Node(new_board, cost+5, HelperFunctions.copyPath(path),  // the cost for one-element moving is 5
-                HelperFunctions.copyActions(prevActions), HelperFunctions.copyitems(prevItems));
-        newNode.addPrevAction(c);
-        newNode.addPrevitem(Integer.toString(board[x][y]));
-        newNode.addToPath(this);
+        Node newNode = new Node(new_board, cost+5, c, Integer.toString(board[x][y]));  // the cost for one-element moving is 5
+        newNode.setFather(this);
         return newNode;
     }
 
@@ -117,7 +100,7 @@ public class Node {
             return null;
         if (board[x][y] == 0)  // is empty cell too
             return null;  // we can not really move it to the empty place (dont change the board)
-        if (!prevActions.isEmpty() && isContrary(Integer.toString(board[x][y]), action))  // it's not the first action and it's Contrary
+        if (prevAction!=' ' && isContrary(Integer.toString(board[x][y]), action))  // it's not the first action and it's Contrary
             return null;
         for (int row = 0; row < board.length; row++)
             for (int col = 0; col < board[0].length; col++)
@@ -128,11 +111,10 @@ public class Node {
     }
 
     private boolean isContrary(String number, char action) {
-        String last_items = prevItems.get(prevItems.size()-1);
-        if (number.equals(last_items) && isContraryAction(action))  // opposite action on one item
+        if (number.equals(prevItem) && isContraryAction(action))  // opposite action on one item
             return true;
-        if (last_items.contains("&")) {  // the last action was moving two items together
-            String[] items = last_items.split("&");
+        if (prevItem.contains("&")) {  // the last action was moving two items together
+            String[] items = prevItem.split("&");
             if ((items[0].equals(number) || items[1].equals(number)) && isContraryAction(action)) {  // opposite action on one from two items
                 return true;
             }
@@ -141,11 +123,10 @@ public class Node {
     }
 
     private boolean isContraryAction(char action) {
-        char lastAction = prevActions.get(prevActions.size()-1);
-        if ((action == 'L' && lastAction == 'R')
-            || (action == 'U' && lastAction == 'D')
-            || (action == 'R' && lastAction == 'L')
-            || (action == 'D' && lastAction == 'U'))
+        if ((action == 'L' && prevAction == 'R')
+            || (action == 'U' && prevAction == 'D')
+            || (action == 'R' && prevAction == 'L')
+            || (action == 'D' && prevAction == 'U'))
             return true;
         return false;
     }
@@ -196,11 +177,8 @@ public class Node {
         }
         int[][] new_board = move2(i1, j1, x1, y1, i2, j2, x2, y2, c);
         if (new_board == null) return null;
-        Node newNode = new Node(new_board, cost+costToAdd, HelperFunctions.copyPath(path),
-                HelperFunctions.copyActions(prevActions), HelperFunctions.copyitems(prevItems));
-        newNode.addPrevAction(c);
-        newNode.addPrevitem(Integer.toString(board[x1][y1])+'&'+Integer.toString(board[x2][y2]));
-        newNode.addToPath(this);
+        Node newNode = new Node(new_board, cost+costToAdd, c, Integer.toString(board[x1][y1])+'&'+Integer.toString(board[x2][y2]));
+        newNode.setFather(this);
         return newNode;
     }
 
@@ -211,9 +189,8 @@ public class Node {
         String str1 = Integer.toString(board[x1][y1])+'&'+Integer.toString(board[x2][y2]);
         String str2 = Integer.toString(board[x2][y2])+'&'+Integer.toString(board[x1][y1]);
         String last_items;
-        if (!prevActions.isEmpty()) {
-            last_items = prevItems.get(prevItems.size() - 1);
-            if ((str1.equals(last_items) || str2.equals(last_items)) && isContraryAction(action))
+        if (prevAction != ' ') {
+            if ((str1.equals(prevItem) || str2.equals(prevItem)) && isContraryAction(action))
                 return null;
         }
         int[][] new_board = move(i1, j1, x1, y1, action, this.board);
@@ -230,14 +207,6 @@ public class Node {
         this.board = board;
     }
 
-    public ArrayList<Node> getPath() {
-        return path;
-    }
-
-    public void setPath(ArrayList<Node> path) {
-        this.path = path;
-    }
-
     public int getCost() {
         return cost;
     }
@@ -250,12 +219,12 @@ public class Node {
         return NUM;
     }
 
-    public ArrayList<Character> getPrevActions() {
-        return prevActions;
+    public char getPrevAction() {
+        return prevAction;
     }
 
-    public ArrayList<String> getPrevItems() {
-        return prevItems;
+    public String getPrevItem() {
+        return prevItem;
     }
 
     public Node getFather() {
