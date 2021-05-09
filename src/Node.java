@@ -36,8 +36,9 @@ public class Node {
      * that operator method returns.
      */
     public Node doOperator(ArrayList<Point> emptyCells, int index, String operator_str) {
+        if (operator_str.length() == 2 && emptyCells.size() != 2) return null;
         char operator_ch = operator_str.charAt(0);
-        if (index == 0 && operator_str.length() == 2 && emptyCells.size() == 2) {  // the index is to do the dual operator one time!
+        if (index == 0 && operator_str.length() == 2) {  // the index is to do the dual operator one time!
             Point first = emptyCells.get(0);
             Point second = emptyCells.get(1);
             switch (operator_ch) {

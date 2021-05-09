@@ -36,22 +36,9 @@ public class Astar implements Algorithm {
             if (HelperFunctions.isGoal(goal_matrix, state.getBoard())) return;
             C.put(state.toString(), state);
             ArrayList<Point> emptyCells = HelperFunctions.findEmptyCells(state.getBoard());
-            if (emptyCells.size() == 2) {  // two empty cells
-                Point first = emptyCells.get(0);
-                Point second = emptyCells.get(1);
-                char[] operatorsToTry = null;
-                if (HelperFunctions.isAbove(first, second)) operatorsToTry = lr;
-                else if (HelperFunctions.isNext(first, second)) operatorsToTry = ud;
-                if (operatorsToTry != null) {  // the empty cells in the matrix are adjacent to each other.
-                    for (char c : operatorsToTry) {
-                        temp = state.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
-                        CheckAndAdd();
-                    }
-                }
-            }
-            for (Point p : emptyCells) {
-                for (char c : operators) {  // check moving one item
-                    temp = state.operator(c, p.getI(), p.getJ());
+            for (int i = 0; i < emptyCells.size(); i++) {
+                for (String operator : OPERATORS) {  // check moving one item
+                    temp = state.doOperator(emptyCells, i, operator);
                     CheckAndAdd();
                 }
             }
@@ -66,8 +53,8 @@ public class Astar implements Algorithm {
             }
             else if (L_hash.containsKey(temp.toString())) {
                 Node tempInL = L_hash.get(temp.toString());
-                int fQueue = tempInL.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
-                int fNew = temp.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
+                int fQueue = tempInL.getCost() + 3*Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
+                int fNew = temp.getCost() + 3*Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
                 if (fQueue > fNew) {
                     L_hash.remove(temp.toString());  // remove tempInL from the queue
                     L_hash.put(temp.toString(), temp);

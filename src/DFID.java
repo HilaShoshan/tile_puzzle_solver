@@ -52,38 +52,18 @@ public class DFID implements Algorithm {
         ArrayList<Point> emptyCells = HelperFunctions.findEmptyCells(n.getBoard());
         Result result;
         Node g;
-        if (emptyCells.size() == 2) {  // two empty cells
-            Point first = emptyCells.get(0);
-            Point second = emptyCells.get(1);
-            char[] operatorsToTry = null;
-            if (HelperFunctions.isAbove(first, second)) operatorsToTry = lr;
-            else if (HelperFunctions.isNext(first, second)) operatorsToTry = ud;
-            if (operatorsToTry != null) {  // the empty cells in the matrix are adjacent to each other.
-                for (char c : operatorsToTry) {
-                    g = n.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
-                    if (g != null) {
-                        if (Hash.containsKey(g.toString())) continue;
-                        //else g.setFather(n);
-                        result = limited_DFS(g, limit - 1, Hash);
-                        if (result == Result.CUTOFF) isCutoff = true;
-                        else if (result != Result.FAILED) return result;
-                    }
-                }
-            }
-        }
-        for (Point p : emptyCells) {
-            for (char c : operators) {  // check moving one item
-                g = n.operator(c, p.getI(), p.getJ());
+        for (int i = 0; i < emptyCells.size(); i++) {   // not stopping on input2.txt!!!!
+            for (String operator : OPERATORS) {  // check moving one item
+                g = n.doOperator(emptyCells, i, operator);
                 if (g != null) {
                     if (Hash.containsKey(g.toString())) continue;
-                    //else g.setFather(n);
                     result = limited_DFS(g, limit-1, Hash);
                     if (result == Result.CUTOFF) isCutoff = true;
                     else if (result != Result.FAILED) return result;
                 }
             }
         }
-        if (open) {
+        if (open) {  // here???
             System.out.println("Recursive call number " + Integer.toString(depth-limit));
             HelperFunctions.print_openList(Hash, depth);
         }

@@ -28,25 +28,9 @@ public class BFS implements Algorithm {
             L_hash.remove(state.toString());
             C.put(state.toString(), state);
             ArrayList<Point> emptyCells = HelperFunctions.findEmptyCells(state.getBoard());  // have to be a list of one or two cells
-            if (emptyCells.size() == 2) {  // two empty cells
-                Point first = emptyCells.get(0);
-                Point second = emptyCells.get(1);
-                if (HelperFunctions.isAbove(first, second)) {// one below the other
-                    for (char c : lr) {
-                        temp = state.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
-                        if (CheckAndAdd()) return;  // Done (found the goal)
-                    }
-                }
-                if (HelperFunctions.isNext(first, second)) {  // one next the other
-                    for (char c : ud) {
-                        temp = state.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
-                        if (CheckAndAdd()) return;
-                    }
-                }
-            }
-            for (Point p : emptyCells) {
-                for (char c : operators) {  // check moving one item
-                    temp = state.operator(c, p.getI(), p.getJ());
+            for (int index = 0; index < emptyCells.size(); index++) {
+                for (String operator : OPERATORS) {
+                    temp = state.doOperator(emptyCells, index, operator);
                     if (CheckAndAdd()) return;
                 }
             }

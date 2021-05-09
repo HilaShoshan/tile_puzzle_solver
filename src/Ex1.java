@@ -19,7 +19,6 @@ public class Ex1 {
                 algo.run();
                 break;
             case "A*":
-                game.setTime(true);
                 algo = new Astar(game);
                 algo.run();
                 break;
