@@ -9,6 +9,7 @@ public class Node {
     private char prevAction = ' ';  // what action we made to get the current state
     private String prevItem = "";  // to what item did we do this
     private Node father = null;  // from which node did we get the current one
+    private boolean OUT = false;  // for IDA* algorithm
 
     public Node(int[][] board) {
         NUM++;
@@ -25,28 +26,35 @@ public class Node {
         this.prevItem = prevItem;
     }
 
-    /*public Node iterateOperators(ArrayList<Point> emptyCells) {
-        if (emptyCells.size() == 2) {  // two empty cells
-            Point first = emptyCells.get(0);
-            Point second = emptyCells.get(1);
-            if (Math.abs(first.getI()-second.getI())==1 && first.getJ() == second.getJ()) {  // one below the other
-                for (char c : Algorithm.lr) {
-                    return this.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
-                }
+    /**
+     * This method gets as input an emptyCells ArrayList of size 2 and an operator to do on the board,
+     * checks if the empty cells are adjacent, and whether it is possible to perform the given operator
+     * on these points.
+     * @param emptyCells = an ArrayList of size 2!
+     * @param operator = a char that represent the (dual) operator we want to do.
+     * @return null if it's impossible to perform this operator on this board, else returns the Node
+     * that operator method returns.
+     */
+    public Node doDualOperator(ArrayList<Point> emptyCells, char operator) {
+        Point first = emptyCells.get(0);
+        Point second = emptyCells.get(1);
+        switch (operator) {
+            case 'L':
+            case 'R': {
+                if (HelperFunctions.isAbove(first, second)) {  // one below the other
+                    return this.operator(operator, first.getI(), first.getJ(), second.getI(), second.getJ());
+                } else return null;
             }
-            if (first.getI() == second.getI() && Math.abs(first.getJ()-second.getJ())==1) {  // one next the other
-                for (char c : Algorithm.ud) {
-                    return this.operator(c, first.getI(), first.getJ(), second.getI(), second.getJ());
-                }
+            case 'U':
+            case 'D': {
+                if (HelperFunctions.isNext(first, second)) {  // one next the other
+                    return this.operator(operator, first.getI(), first.getJ(), second.getI(), second.getJ());
+                } else return null;
             }
+            default:
+                return null;
         }
-        for (Point p : emptyCells) {
-            for (char c : Algorithm.operators) {  // check moving one item
-                return this.operator(c, p.getI(), p.getJ());
-            }
-        }
-        return null;
-    }*/
+    }
 
     /**
      * Move the numbers around the empty cell (i,j) according to the action received (left/up/right/down) if it's possible.
@@ -237,6 +245,14 @@ public class Node {
 
     public int getID() {
         return ID;
+    }
+
+    public boolean isOUT() {
+        return OUT;
+    }
+
+    public void setOUT(boolean OUT) {
+        this.OUT = OUT;
     }
 
     public String toString() {

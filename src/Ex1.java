@@ -15,7 +15,6 @@ public class Ex1 {
                 algo.run();
                 break;
             case "DFID":
-                game.setTime(true);
                 algo = new DFID(game);
                 algo.run();
                 break;
