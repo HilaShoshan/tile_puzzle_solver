@@ -1,4 +1,4 @@
-5D-3R-3U-2&5U-7L-7L-5&6D-2R-4D-3R-2U-4L-4L-5&6U
-Num: 204185
-Cost: 76
-2.859 seconds
+no path
+Num: 5
+Cost: 0
+0.02 seconds

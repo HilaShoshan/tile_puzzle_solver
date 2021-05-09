@@ -1,10 +1,12 @@
+import com.sun.xml.internal.ws.encoding.MtomCodec;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
 public class IDAstar implements Algorithm {
 
-    private Node state, n, g;
+    private Node state, n, g, g_twin;
     private int[][] goal_matrix;
     private boolean open;
 
@@ -19,7 +21,7 @@ public class IDAstar implements Algorithm {
 
     @Override
     public void run() {
-        int t = 3*Heuristics.ManhattanDistance2D(state.getBoard(), goal_matrix);
+        int t = f(state);
         int minF;
         ArrayList<Point> emptyCells;
         while (t != Integer.MAX_VALUE) {
@@ -34,23 +36,43 @@ public class IDAstar implements Algorithm {
                     n.setOUT(true);
                     L.push(n);
                     emptyCells = HelperFunctions.findEmptyCells(n.getBoard());
-                    if (emptyCells.size() == 2) {  // two empty cells
-                        for (char operator : operators) {  // try to do dual operators (move two items together)
-                            g = n.doDualOperator(emptyCells, operator);
-                        }
-                    }
-                    for (Point p : emptyCells) {
-                        for (char c : operators) {  // check moving one item
-                            g = n.operator(c, p.getI(), p.getJ());
+                    for (int i = 0; i < emptyCells.size(); i++) {
+                        for (String operator : OPERATORS) {
+                            g = n.doOperator(emptyCells, i, operator);
+                            if (g == null) continue;
+                            if (f(g) > t) {
+                                minF = Math.min(minF, f(g));
+                                continue;
+                            }
+                            if (H.containsKey(g.getBoard()) && H.get(g.getBoard()).isOUT())
+                                continue;
+                            if (H.containsKey(g.getBoard()) && !H.get(g.getBoard()).isOUT()) {
+                                g_twin = H.get(g.getBoard());
+                                if (f(g_twin) > f(g)) {
+                                    L.remove(g_twin);
+                                    H.remove(g.getBoard());
+                                } else continue;
+                            }
+                            if (HelperFunctions.isGoal(goal_matrix, g.getBoard())) {
+                                state = g;
+                                return;
+                            }
+                            L.push(g);
+                            H.put(g.toString(), g);
                         }
                     }
                 }
             }
+            t = minF;
         }
+    }
+
+    private int f(Node node) {
+        return node.getCost() + 3*Heuristics.ManhattanDistance2D(node.getBoard(), goal_matrix);
     }
 
     @Override
     public Node getState() {
-        return null;
+        return state;
     }
 }

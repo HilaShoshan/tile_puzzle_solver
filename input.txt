@@ -1,4 +1,4 @@
-DFID
+IDA*
 with time
 no open
 3x4

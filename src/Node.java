@@ -31,29 +31,34 @@ public class Node {
      * checks if the empty cells are adjacent, and whether it is possible to perform the given operator
      * on these points.
      * @param emptyCells = an ArrayList of size 2!
-     * @param operator = a char that represent the (dual) operator we want to do.
+     * @param operator_str = a string that represents the operator we want to perform.
      * @return null if it's impossible to perform this operator on this board, else returns the Node
      * that operator method returns.
      */
-    public Node doDualOperator(ArrayList<Point> emptyCells, char operator) {
-        Point first = emptyCells.get(0);
-        Point second = emptyCells.get(1);
-        switch (operator) {
-            case 'L':
-            case 'R': {
-                if (HelperFunctions.isAbove(first, second)) {  // one below the other
-                    return this.operator(operator, first.getI(), first.getJ(), second.getI(), second.getJ());
-                } else return null;
+    public Node doOperator(ArrayList<Point> emptyCells, int index, String operator_str) {
+        char operator_ch = operator_str.charAt(0);
+        if (index == 0 && operator_str.length() == 2 && emptyCells.size() == 2) {  // the index is to do the dual operator one time!
+            Point first = emptyCells.get(0);
+            Point second = emptyCells.get(1);
+            switch (operator_ch) {
+                case 'L':
+                case 'R': {
+                    if (HelperFunctions.isAbove(first, second)) {  // one below the other
+                        return this.operator(operator_ch, first.getI(), first.getJ(), second.getI(), second.getJ());
+                    } else return null;
+                }
+                case 'U':
+                case 'D': {
+                    if (HelperFunctions.isNext(first, second)) {  // one next the other
+                        return this.operator(operator_ch, first.getI(), first.getJ(), second.getI(), second.getJ());
+                    } else return null;
+                }
+                default:
+                    return null;
             }
-            case 'U':
-            case 'D': {
-                if (HelperFunctions.isNext(first, second)) {  // one next the other
-                    return this.operator(operator, first.getI(), first.getJ(), second.getI(), second.getJ());
-                } else return null;
-            }
-            default:
-                return null;
-        }
+        }  // else ..
+        Point p = emptyCells.get(index);
+        return this.operator(operator_ch, p.getI(), p.getJ());
     }
 
     /**
