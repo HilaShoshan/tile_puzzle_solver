@@ -25,10 +25,13 @@ public class DFBnB implements Algorithm {
     @Override
     public void run() {
         int t = Integer.MAX_VALUE;
+        int iteration = 1;
         while (!L.isEmpty()) {
-            n = L.peek();  // remove front and saves it as Node n
-            if (n.isOUT()) H.remove(n.toString());
-            else {
+            n = L.pop();  // remove front and saves it as Node n
+            if (n.isOUT()) {
+                //System.out.println("out");
+                H.remove(n.toString());
+            } else {
                 n.setOUT(true);
                 L.push(n);
                 findChildren(n);  // after this function, the "children" ArrayList contains all the children of n, and sorted by children's f values
@@ -36,12 +39,13 @@ public class DFBnB implements Algorithm {
                     g = children.get(i);
                     boolean contains_g = H.containsKey(g.toString());
                     if (f(g) >= t) {
-                        children = new ArrayList<>(children.subList(0, i));  // remove g and all the nodes after it from children
+                        for (int j = children.size()-1 ; j >= i  ; j--)
+                            children.remove(j);  // remove g and all the nodes after it from children
                     } else if (contains_g) {
                         Node g_twin = H.get(g.toString());
                         if (g_twin.isOUT())  // If H contains g’=g and g’ is marked as "out"
                             children.remove(g_twin);  // remove g from children
-                        else {  // If H contains g’=g and g’ is not marked as “out”
+                        else {  // If H contains g’=g and g’ is not marked as "out"
                             if (f(g_twin) <= f(g)) children.remove(g_twin);
                             else {
                                 L.remove(g_twin);
@@ -51,7 +55,9 @@ public class DFBnB implements Algorithm {
                     } else if (HelperFunctions.isGoal(goal_matrix, g.getBoard())) {  // if we reached here, f(g) < t
                         t = f(g);
                         state = g;  // like setting the "result" to path(g)
-                        children = new ArrayList<>(children.subList(0, i));  // remove g and all the nodes after it from children
+                        System.out.println("found goal, iteration "+iteration);
+                        for (int j = children.size()-1 ; j >= i  ; j--)
+                            children.remove(j);  // remove g and all the nodes after it from children
                     }
                 }
                 // insert children list in a reverse order to L and H
@@ -60,6 +66,7 @@ public class DFBnB implements Algorithm {
                     H.put(children.get(i).toString(), children.get(i));
                 }
             }
+            iteration++;
         }
     }
 
@@ -73,7 +80,7 @@ public class DFBnB implements Algorithm {
         for (int i = 0; i < emptyCells.size(); i++) {
             for (String operator : OPERATORS) {
                 child = n.doOperator(emptyCells, i, operator);
-                if (n != null) children.add(child);
+                if (child != null) children.add(child);
             }
         }
         Collections.sort(children, new NodeComparator(goal_matrix));
@@ -81,6 +88,6 @@ public class DFBnB implements Algorithm {
 
     @Override
     public Node getState() {
-        return null;
+        return state;
     }
 }

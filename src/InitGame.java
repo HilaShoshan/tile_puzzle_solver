@@ -16,7 +16,7 @@ public class InitGame {
 
     // constructor
     public InitGame() throws Exception {
-        File file = new File("input2.txt");  // read input.txt
+        File file = new File("input.txt");  // read input.txt
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line;
         int row = 1;
