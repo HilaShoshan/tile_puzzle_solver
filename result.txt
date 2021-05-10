@@ -1,4 +1,4 @@
-no path
-Num: 10
-Cost: 0
-0.015 seconds
+8R-11D-7L-8U
+Num: 19
+Cost: 20
+0.0 seconds
