@@ -1,6 +1,4 @@
-import javax.swing.*;
 import java.io.*;
-import java.util.Arrays;
 
 /**
  * This class initializes the game board and other features of the game.
@@ -59,7 +57,6 @@ public class InitGame {
     }
 
     private void fill_matrix(String line, int i, String s) {
-        // System.out.println(" i  =  " + i);
         String[] numbers = line.split(",");  // get an array of all the numbers on this row of the board
         for (int j = 0; j < M; j++) {  // fill the columns
             if (!numbers[j].equals("_")) {  // a number
@@ -70,8 +67,6 @@ public class InitGame {
                     goal_state[i][j] = num;
             }  // if it's a "_", will remain 0 on matrix[i][j]
         }
-        /*if (s.equals("s")) print_matrix(start_state);
-        else print_matrix(goal_state);*/
     }
 
     public String getAlgorithm() {

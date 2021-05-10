@@ -63,30 +63,6 @@ public class HelperFunctions {
     }
 
     /**
-     * deep copy functions
-     */
-    public static ArrayList<Character> copyActions(ArrayList<Character> actions) {
-        ArrayList<Character> newActions = new ArrayList<>();
-        for (char c : actions)
-            newActions.add(c);
-        return newActions;
-    }
-
-    public static ArrayList<String> copyitems(ArrayList<String> items) {
-        ArrayList<String> newitems = new ArrayList<>();
-        for (String s : items)
-            newitems.add(s);
-        return newitems;
-    }
-
-    public static ArrayList<Node> copyPath(ArrayList<Node> path) {  // maybe should deep copy the Node itself too!!
-        ArrayList<Node> newPath = new ArrayList<>();
-        for (Node n : path)
-            newPath.add(n);
-        return newPath;
-    }
-
-    /**
      * printing functions
      */
 

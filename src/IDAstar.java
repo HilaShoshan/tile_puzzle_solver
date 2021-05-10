@@ -17,6 +17,7 @@ public class IDAstar implements Algorithm {
     public IDAstar(InitGame game) {
         this.state = new Node(game.getStart_state());
         this.goal_matrix = game.getGoal_state();
+        this.open = game.getOpen();
     }
 
     @Override
@@ -24,11 +25,14 @@ public class IDAstar implements Algorithm {
         int t = f(state);
         int minF;
         ArrayList<Point> emptyCells;
+        int iteration = 0;
         while (t != Integer.MAX_VALUE) {
             minF = Integer.MAX_VALUE;
             L.push(state);
             H.put(state.toString(), state);
+            state.setOUT(false);
             while (!L.isEmpty()) {
+                if (open) HelperFunctions.print_openList(H, iteration);
                 n = L.pop();
                 if (n.isOUT()) {  // n marked as out
                     H.remove(n.toString());
@@ -39,18 +43,20 @@ public class IDAstar implements Algorithm {
                     for (int i = 0; i < emptyCells.size(); i++) {
                         for (String operator : OPERATORS) {
                             g = n.doOperator(emptyCells, i, operator);
-                            if (g == null) continue;
+                            if (g == null) {
+                                continue;
+                            }
                             if (f(g) > t) {
                                 minF = Math.min(minF, f(g));
                                 continue;
                             }
-                            if (H.containsKey(g.getBoard()) && H.get(g.getBoard()).isOUT())
+                            if (H.containsKey(g.toString()) && H.get(g.toString()).isOUT())
                                 continue;
-                            if (H.containsKey(g.getBoard()) && !H.get(g.getBoard()).isOUT()) {
-                                g_twin = H.get(g.getBoard());
+                            if (H.containsKey(g.toString()) && !H.get(g.toString()).isOUT()) {
+                                g_twin = H.get(g.toString());
                                 if (f(g_twin) > f(g)) {
                                     L.remove(g_twin);
-                                    H.remove(g.getBoard());
+                                    H.remove(g.toString());
                                 } else continue;
                             }
                             if (HelperFunctions.isGoal(goal_matrix, g.getBoard())) {
@@ -62,6 +68,7 @@ public class IDAstar implements Algorithm {
                         }
                     }
                 }
+                iteration++;
             }
             t = minF;
         }

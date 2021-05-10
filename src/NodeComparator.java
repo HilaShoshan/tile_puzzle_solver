@@ -12,8 +12,8 @@ public class NodeComparator implements Comparator<Node> {
     public int compare(Node n1, Node n2) {
         int g1 = n1.getCost();
         int g2 = n2.getCost();
-        int h1 = Heuristics.ManhattanDistance2D(n1.getBoard(), goal_matrix);
-        int h2 = Heuristics.ManhattanDistance2D(n2.getBoard(), goal_matrix);
+        int h1 = 3*Heuristics.ManhattanDistance2D(n1.getBoard(), goal_matrix);
+        int h2 = 3*Heuristics.ManhattanDistance2D(n2.getBoard(), goal_matrix);
         if (g1+h1 < g2+h2) return -1;
         else if (g1+h1 > g2+h2) return 1;
         else  {  // g1+h1 == g2+h2
