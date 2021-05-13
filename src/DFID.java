@@ -18,8 +18,8 @@ public class DFID implements Algorithm {
         FAILED
     }
 
-    public DFID(InitGame game) {
-        this.state = new Node(game.getStart_state());
+    public DFID(int[][] start) {
+        this.state = new Node(start);
     }
 
     @Override

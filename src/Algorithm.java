@@ -1,10 +1,7 @@
-import java.util.*;
-
+/**
+ * An Algorithm Interface, that the whole 5 algorithm will implement.
+ */
 public interface Algorithm {
-
-    public static char[] operators = new char[]{'L', 'U', 'R', 'D'};
-    public static char[] lr = new char[]{'L', 'R'};  // first left then right
-    public static char[] ud = new char[]{'U', 'D'};  // first up then down
 
     public static String[] OPERATORS = new String[]{"LL", "UU", "RR", "DD", "L", "U", "R", "D"};
 

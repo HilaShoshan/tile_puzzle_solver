@@ -1,5 +1,10 @@
 import java.util.Comparator;
 
+/**
+ * A class that implementing a Node comparator, which compare nodes by their f values, and their creation time.
+ * A "greater" node is the one with the greater f value.
+ * If both node have the same f value, the node with greater ID is the "greater".
+ */
 public class NodeComparator implements Comparator<Node> {
 
     @Override

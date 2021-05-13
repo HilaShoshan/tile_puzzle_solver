@@ -1,24 +1,19 @@
 import java.util.*;
 
 /**
- * האלגוריתם משתמש בתור עדיפויות, ומוציא ממנו קודקודים לפי הציון שהם יקבלו
- * הפונקציה של הציון היא f, כאשר ציון טוב = ציון נמוך יותר
- * אלגוריתמים שונים יגדירו את f בצורה שונה
- * f היא פונקציה שמקבלת קודקוד ומגדירה לו מספר.
- * h היא פונקציה שאומרת מה הפוטנציאל להגיע מהקודקוד הנוכחי לקודקוד המטרה, שזה בעצם אומר כמה עולה להגיע מקודקוד מסוים לקודקוד המטרה.
- * g היא פונקציה שאומרת מה העלות להגיע מקודקוד ההתחלה לקודקוד אחר.
+ * Implementing the Informed-search A* algorithm, with closed-list.
  */
 public class Astar implements Algorithm {
 
     private Node state, temp;
 
     // data structures for the algorithm
-    private PriorityQueue<Node> L_queue;
+    private PriorityQueue<Node> L_queue;  // sorted by the node's f-value (lower f value => better grade)
     private HashMap<String, Node> L_hash = new HashMap<>();
     private HashMap<String, Node> C = new HashMap<>();  // closeList
 
-    public Astar(InitGame game) {
-        this.state = new Node(game.getStart_state());
+    public Astar(int[][] start) {
+        this.state = new Node(start);
         L_queue = new PriorityQueue<Node>(new NodeComparator());
         L_queue.add(state);
         L_hash.put(state.toString(), state);

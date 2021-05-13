@@ -5,9 +5,9 @@ import java.util.HashMap;
 public class HelperFunctions {
 
     /**
-     * checks if a given matrix equals to the goal (private field of the class)
+     * checks if a given matrix equals to the goal.
      * @param board = the given matrix (some board of a new state returned from 'operator')
-     * @return false if it's noe the goal, true else.
+     * @return false if it's not the goal, true else.
      */
     public static boolean isGoal(int[][] board) {
         for (int i = 0; i < board.length; i++) {
@@ -23,7 +23,7 @@ public class HelperFunctions {
     /**
      * finds the empty cells in state's board.
      * @param board is the board matrix of some state.
-     * @return an arraylist of all the empty points in the board
+     * @return an Arraylist of all the empty points in the board
      */
     public static ArrayList<Point> findEmptyCells(int[][] board) {
         ArrayList<Point> result = new ArrayList<>();

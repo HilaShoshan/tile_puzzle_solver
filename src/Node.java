@@ -1,23 +1,34 @@
 import java.util.ArrayList;
 
+/**
+ * A class that implements a state of the game.
+ * Each state is a vertex (Node) on the searching graph, that built during the algorithm running.
+ */
 public class Node {
 
     private static int NUM = 0;  // counting the number of nodes created so far.
-    private int ID = 0;  // unique ID - smaller ID means that the Node is created first.
-    private int[][] board;
-    private int cost = 0;
-    private double f;  // for the algorithms that uses heuristics
+
+    private int ID = 0;  // unique ID - smaller ID means that the Node is created first (on lower iteration or "lower" operator at the same iteration).
+    private int[][] board;  // the board at this state of game (0 represents an empty cell).
+    private int cost = 0;  // the cost from the begging to the current Node (the sum of weights on "edges").
+    private double f;  // the f value calculating with the heuristic function at some algorithms.
     private char prevAction = ' ';  // what action we made to get the current state
     private String prevItem = "";  // to what item did we do this
     private Node father = null;  // from which node did we get the current one
-    private boolean OUT = false;  // for IDA* algorithm
+    private boolean OUT = false;  // using on IDA* and DFBnB algorithm
 
+    /**
+     * A basic constructor (mostly for the starting state)
+     */
     public Node(int[][] board) {
         NUM++;
         this.ID = NUM;
         this.board = board;
     }
 
+    /**
+     * A constructor that uses to create a child of a node
+     */
     public Node(int[][] board, int cost, char prevAction, String prevItem) {
         NUM++;
         this.ID = NUM;
@@ -29,12 +40,13 @@ public class Node {
     }
 
     /**
-     * This method gets as input an emptyCells ArrayList of size 2 and an operator to do on the board,
-     * checks if the empty cells are adjacent, and whether it is possible to perform the given operator
-     * on these points.
-     * @param emptyCells = an ArrayList of size 2!
-     * @param operator_str = a string that represents the operator we want to perform.
-     * @return null if it's impossible to perform this operator on this board, else returns the Node
+     * This method gets as input an emptyCells ArrayList and an operator to do on the board,
+     * checks if asking to do a dual-operator, or a single one, and whether it is possible.
+     * @param emptyCells = an ArrayList with the empty cells on the current board.
+     * @param index = the index that we should look at on the emptyCells list.
+     *              [meaningless if a dual-operator has asked to be performed].
+     * @param operator_str = a string that represents the operator we want to perform (from OPERATORS array on Algorithm interface)
+     * @return null if it's impossible to perform this operator on this board, else returns the (child) Node
      * that operator method returns.
      */
     public Node doOperator(ArrayList<Point> emptyCells, int index, String operator_str) {
@@ -98,13 +110,13 @@ public class Node {
         }
         int[][] new_board = move(i, j, x, y, c, this.board);
         if (new_board == null) return null;
-        Node newNode = new Node(new_board, cost+5, c, Integer.toString(board[x][y]));  // the cost for one-element moving is 5
+        Node newNode = new Node(new_board, cost+5, c, Integer.toString(board[x][y]));  // the cost for moving one-element is 5
         newNode.setFather(this);
         return newNode;
     }
 
     /**
-     * move (if possible) the item to the empty cell on the board
+     * move (if possible) an item to the empty cell on the board.
      * @param i = the row of the empty cell (to move there)
      * @param j = the column of the empty cell
      * @param x = the row of the item we want to move (some item around the empty cell)
@@ -127,6 +139,13 @@ public class Node {
         return new_board;
     }
 
+    /**
+     * A helper function that checks if a action we want to perform is contrary (opposite) to the previous one.
+     * uses 'isContraryAction' function too
+     * @param number = the number we want to move (the value of it)
+     * @param action = a char that represents the action we want to perform on the number.
+     * @return true if the action is contrary, else returns false.
+     */
     private boolean isContrary(String number, char action) {
         if (number.equals(prevItem) && isContraryAction(action))  // opposite action on one item
             return true;
@@ -139,6 +158,11 @@ public class Node {
         return false;
     }
 
+    /**
+     * Checks if a given action is contrary to the previous action (as action only - no matter the number we want to move).
+     * @param action = a char that represents the action.
+     * @return true if it's contrary, else returns false.
+     */
     private boolean isContraryAction(char action) {
         if ((action == 'L' && prevAction == 'R')
             || (action == 'U' && prevAction == 'D')
@@ -199,6 +223,10 @@ public class Node {
         return newNode;
     }
 
+    /**
+     * try to move (x1,y1) to (i1,j1) and (x2,y2) to (i2,j2), according to the action receives.
+     * @return the new board or null if it's impossible.
+     */
     private int[][] move2(int i1, int j1, int x1, int y1, int i2, int j2, int x2, int y2, char action) {
         if (x1 >= board.length || y1 >= board[0].length || x1 < 0 || y1 < 0
             || x2 >= board.length || y2 >= board[0].length || x2 < 0 || y2 < 0) // exceeding the matrix limits

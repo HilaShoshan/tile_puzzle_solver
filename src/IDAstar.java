@@ -12,8 +12,8 @@ public class IDAstar implements Algorithm {
     private Stack<Node> L = new Stack<>();
     private HashMap<String, Node> H = new HashMap<>();
 
-    public IDAstar(InitGame game) {
-        this.state = new Node(game.getStart_state());
+    public IDAstar(int[][] start) {
+        this.state = new Node(start);
     }
 
     @Override

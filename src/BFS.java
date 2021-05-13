@@ -1,5 +1,8 @@
 import java.util.*;
 
+/**
+ * Implementing the Uniformed-search BFS algorithm, with closed-list.
+ */
 public class BFS implements Algorithm {
 
     private Node state, temp;
@@ -9,8 +12,8 @@ public class BFS implements Algorithm {
     private HashMap<String, Node> L_hash = new HashMap<>(); // parallel to the queue, in order to find items in O(1)
     private HashMap<String, Node> C = new HashMap<>();  // closeList
 
-    public BFS(InitGame game) {
-        this.state = new Node(game.getStart_state());
+    public BFS(int[][] start) {
+        this.state = new Node(start);
     }
 
     @Override

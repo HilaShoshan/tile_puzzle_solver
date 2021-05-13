@@ -12,28 +12,29 @@ public class Ex1 {
 
         GOAL = game.getGoal_state();  // init the goal matrix of that game
         OPEN = game.getOpen();
+        int[][] start = game.getStart_state();
         String algorithm = game.getAlgorithm();
         Algorithm algo;
         startTime = System.currentTimeMillis();
         switch (algorithm) {
             case "BFS":
-                algo = new BFS(game);
+                algo = new BFS(start);
                 algo.run();
                 break;
             case "DFID":
-                algo = new DFID(game);
+                algo = new DFID(start);
                 algo.run();
                 break;
             case "A*":
-                algo = new Astar(game);
+                algo = new Astar(start);
                 algo.run();
                 break;
             case "IDA*":
-                algo = new IDAstar(game);
+                algo = new IDAstar(start);
                 algo.run();
                 break;
             case "DFBnB":
-                algo = new DFBnB(game);
+                algo = new DFBnB(start);
                 algo.run();
                 break;
             default:

@@ -12,8 +12,8 @@ public class DFBnB implements Algorithm {
     private ArrayList<Node> children = new ArrayList<>();
     private ArrayList<Point> emptyCells;
 
-    public DFBnB(InitGame game) {
-        this.state = new Node(game.getStart_state());
+    public DFBnB(int[][] start) {
+        this.state = new Node(start);
         L.push(state);
         H.put(state.toString(), state);
     }

@@ -1,5 +1,9 @@
 import java.util.HashMap;
 
+/**
+ * A class that contains all the heuristic functions that can be use on the various algorithms.
+ * heuristic says what is the potential to get from the current node to the goal node (an estimation of the cost).
+ */
 public class Heuristics {
 
     public static int ManhattanDistance2D(int[][] state) {
