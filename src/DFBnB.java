@@ -5,8 +5,6 @@ import java.util.*;
 public class DFBnB implements Algorithm {
 
     private Node state, n, g;
-    private int[][] goal_matrix;
-    private boolean open;
 
     // data structures for the algorithm
     private Stack<Node> L = new Stack<>();
@@ -16,8 +14,6 @@ public class DFBnB implements Algorithm {
 
     public DFBnB(InitGame game) {
         this.state = new Node(game.getStart_state());
-        this.goal_matrix = game.getGoal_state();
-        this.open = game.getOpen();
         L.push(state);
         H.put(state.toString(), state);
     }
@@ -27,6 +23,7 @@ public class DFBnB implements Algorithm {
         double t = Double.MAX_VALUE;
         int iteration = 1;
         while (!L.isEmpty()) {
+            if (Ex1.OPEN) HelperFunctions.print_openList(H, iteration);
             n = L.pop();  // remove front and saves it as Node n
             if (n.isOUT()) {
                 H.remove(n.toString());
@@ -46,7 +43,7 @@ public class DFBnB implements Algorithm {
                         }
                     } else if (contains_g) {
                         Node g_twin = H.get(g.toString());
-                        set_f(g_twin);
+                        HelperFunctions.setF_manhattan(g_twin, emptyCells.size());
                         if (g_twin.isOUT())  // If H contains g’=g and g’ is marked as "out"
                             itr.remove();  // remove g from children
                         else {  // If H contains g’=g and g’ is not marked as "out"
@@ -56,7 +53,7 @@ public class DFBnB implements Algorithm {
                                 H.remove(g_twin.toString());
                             }
                         }
-                    } else if (HelperFunctions.isGoal(goal_matrix, g.getBoard())) {  // if we reached here, f(g) < t
+                    } else if (HelperFunctions.isGoal(g.getBoard())) {  // if we reached here, f(g) < t
                         t = g.getF();
                         state = g;  // like setting the "result" to path(g)
                         itr.remove();
@@ -76,13 +73,6 @@ public class DFBnB implements Algorithm {
         }
     }
 
-    private void set_f(Node node) {
-        if (emptyCells.size() == 1)  // one empty cell - each step's price is 5
-            node.setF(node.getCost() + 5*Heuristics.ManhattanDistance2D(node.getBoard(), goal_matrix));
-        else  // two empty cells - it is possible that one step will be 3 (if the empty cells are one below the other)
-            node.setF(node.getCost() + 3*Heuristics.ManhattanDistance2D(node.getBoard(), goal_matrix));
-    }
-
     private void findChildren(Node n) {
         emptyCells = HelperFunctions.findEmptyCells(n.getBoard());
         Node child;
@@ -90,12 +80,12 @@ public class DFBnB implements Algorithm {
             for (String operator : OPERATORS) {
                 child = n.doOperator(emptyCells, i, operator);
                 if (child != null) {
-                    set_f(child);
+                    HelperFunctions.setF_manhattan(child, emptyCells.size());
                     children.add(child);
                 }
             }
         }
-        Collections.sort(children, new NodeComparator(goal_matrix));
+        Collections.sort(children, new NodeComparator());
     }
 
     @Override

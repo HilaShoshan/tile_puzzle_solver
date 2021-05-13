@@ -11,8 +11,6 @@ import java.util.*;
 public class Astar implements Algorithm {
 
     private Node state, temp;
-    private int[][] goal_matrix;
-    private boolean open;
 
     // data structures for the algorithm
     private PriorityQueue<Node> L_queue;
@@ -21,9 +19,7 @@ public class Astar implements Algorithm {
 
     public Astar(InitGame game) {
         this.state = new Node(game.getStart_state());
-        this.goal_matrix = game.getGoal_state();
-        L_queue = new PriorityQueue<Node>(new NodeComparator(goal_matrix));
-        this.open = game.getOpen();
+        L_queue = new PriorityQueue<Node>(new NodeComparator());
         L_queue.add(state);
         L_hash.put(state.toString(), state);
     }
@@ -33,7 +29,7 @@ public class Astar implements Algorithm {
         while (!L_queue.isEmpty()) {
             state = L_queue.remove();
             L_hash.remove(state.toString());
-            if (HelperFunctions.isGoal(goal_matrix, state.getBoard())) return;
+            if (HelperFunctions.isGoal(state.getBoard())) return;
             C.put(state.toString(), state);
             ArrayList<Point> emptyCells = HelperFunctions.findEmptyCells(state.getBoard());
             for (int i = 0; i < emptyCells.size(); i++) {
@@ -53,8 +49,8 @@ public class Astar implements Algorithm {
             }
             else if (L_hash.containsKey(temp.toString())) {
                 Node tempInL = L_hash.get(temp.toString());
-                int fQueue = tempInL.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
-                int fNew = temp.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard(), goal_matrix);
+                int fQueue = tempInL.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard());
+                int fNew = temp.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard());
                 if (fQueue > fNew) {
                     L_hash.remove(temp.toString());  // remove tempInL from the queue
                     L_hash.put(temp.toString(), temp);

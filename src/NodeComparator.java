@@ -2,12 +2,6 @@ import java.util.Comparator;
 
 public class NodeComparator implements Comparator<Node> {
 
-    private int[][] goal_matrix;
-
-    public NodeComparator(int[][] goal_matrix) {
-        this.goal_matrix = goal_matrix;
-    }
-
     @Override
     public int compare(Node n1, Node n2) {
         if (n1.getF() < n2.getF()) return -1;

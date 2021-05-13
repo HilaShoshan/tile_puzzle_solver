@@ -1,11 +1,17 @@
 import java.io.PrintWriter;
 
 public class Ex1 {
+
+    public static int[][] GOAL;
+    public static boolean OPEN;
+
     public static void main(String[] args) throws Exception {
 
         InitGame game = new InitGame();  // create a game from input.txt file
         long startTime, estimatedTime;  // counting the running time of the algorithm
 
+        GOAL = game.getGoal_state();  // init the goal matrix of that game
+        OPEN = game.getOpen();
         String algorithm = game.getAlgorithm();
         Algorithm algo;
         startTime = System.currentTimeMillis();

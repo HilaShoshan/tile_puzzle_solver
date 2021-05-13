@@ -9,10 +9,10 @@ public class HelperFunctions {
      * @param board = the given matrix (some board of a new state returned from 'operator')
      * @return false if it's noe the goal, true else.
      */
-    public static boolean isGoal(int[][] goal_matrix, int[][] board) {
+    public static boolean isGoal(int[][] board) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] != goal_matrix[i][j]) {
+                if (board[i][j] != Ex1.GOAL[i][j]) {
                     return false;
                 }
             }
@@ -63,13 +63,26 @@ public class HelperFunctions {
     }
 
     /**
+     * Set f = g + h, while h is Manhattan Distance * 3
+     * @param node = the node that we want to set it's f
+     * @param num = the number of empty cells on the board (size of emptyCells list, to know if there is one or two)
+     */
+    public static void setF_manhattan(Node node, int num) {
+        if (num == 1)  // one empty cell - each step's price is 5
+            node.setF(node.getCost() + 5*Heuristics.ManhattanDistance2D(node.getBoard()));
+        else  // two empty cells - it is possible that one step will be 3 (if the empty cells are one below the other)
+            node.setF(node.getCost() + 3*Heuristics.ManhattanDistance2D(node.getBoard()));
+    }
+
+    /**
      * printing functions
      */
 
     public static void print_openList(HashMap<String, Node> openList, int i) {
         System.out.println("Open-List -- Iteration "+i);
         for (String key : openList.keySet()) {
-            System.out.println(key);
+            if (!openList.get(key).isOUT())  // if the node does not mark as "out"
+                System.out.println(key);
         }
         System.out.println("_________________");
     }

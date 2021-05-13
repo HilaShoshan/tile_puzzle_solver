@@ -3,8 +3,6 @@ import java.util.*;
 public class BFS implements Algorithm {
 
     private Node state, temp;
-    private int[][] goal_matrix;
-    private boolean open;
 
     // data structures for the algorithm
     private Queue<Node> L_queue = new LinkedList<>();
@@ -13,8 +11,6 @@ public class BFS implements Algorithm {
 
     public BFS(InitGame game) {
         this.state = new Node(game.getStart_state());
-        this.goal_matrix = game.getGoal_state();
-        this.open = game.getOpen();
     }
 
     @Override
@@ -23,7 +19,7 @@ public class BFS implements Algorithm {
         L_hash.put(state.toString(), state);
         int i = 0;
         while (!L_queue.isEmpty()) {
-            if (open) HelperFunctions.print_openList(L_hash, i);
+            if (Ex1.OPEN) HelperFunctions.print_openList(L_hash, i);
             state = L_queue.remove();  // remove and return the element at the head the queue
             L_hash.remove(state.toString());
             C.put(state.toString(), state);
@@ -46,7 +42,7 @@ public class BFS implements Algorithm {
      */
     private boolean CheckAndAdd() {
         if (temp != null && !C.containsKey(temp.toString()) && !L_hash.containsKey(temp.toString())) {
-            if (HelperFunctions.isGoal(goal_matrix, temp.getBoard())) {
+            if (HelperFunctions.isGoal(temp.getBoard())) {
                 state = temp;
                 return true;
             }

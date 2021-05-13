@@ -2,12 +2,12 @@ import java.util.HashMap;
 
 public class Heuristics {
 
-    public static int ManhattanDistance2D(int[][] state, int[][] goal) {
+    public static int ManhattanDistance2D(int[][] state) {
         int result = 0;
         HashMap<Integer, Point> goalMap = new HashMap<>();
-        for (int i = 0; i < goal.length; i++) {
-            for (int j = 0; j < goal[0].length; j++) {
-                goalMap.put(goal[i][j], new Point(i,j));
+        for (int i = 0; i < Ex1.GOAL.length; i++) {
+            for (int j = 0; j < Ex1.GOAL[0].length; j++) {
+                goalMap.put(Ex1.GOAL[i][j], new Point(i,j));
             }
         }
         for (int i = 0; i < state.length; i++) {
