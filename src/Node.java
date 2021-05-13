@@ -6,6 +6,7 @@ public class Node {
     private int ID = 0;  // unique ID - smaller ID means that the Node is created first.
     private int[][] board;
     private int cost = 0;
+    private double f;  // for the algorithms that uses heuristics
     private char prevAction = ' ';  // what action we made to get the current state
     private String prevItem = "";  // to what item did we do this
     private Node father = null;  // from which node did we get the current one
@@ -24,6 +25,7 @@ public class Node {
         this.cost = cost;
         this.prevAction = prevAction;
         this.prevItem = prevItem;
+        this.f = cost;
     }
 
     /**
@@ -38,7 +40,8 @@ public class Node {
     public Node doOperator(ArrayList<Point> emptyCells, int index, String operator_str) {
         if (operator_str.length() == 2 && emptyCells.size() != 2) return null;
         char operator_ch = operator_str.charAt(0);
-        if (index == 0 && operator_str.length() == 2) {  // the index is to do the dual operator one time!
+        if (index == 1 && operator_str.length() == 2) return null;
+        if (operator_str.length() == 2) {  // the index is 0 (for doing the dual operator one time)!
             Point first = emptyCells.get(0);
             Point second = emptyCells.get(1);
             switch (operator_ch) {
@@ -58,7 +61,7 @@ public class Node {
                     return null;
             }
         }  // else ..
-        Point p = emptyCells.get(index);
+        Point p = emptyCells.get(index);  // take the point we want to work on now
         return this.operator(operator_ch, p.getI(), p.getJ());
     }
 
@@ -227,6 +230,14 @@ public class Node {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public double getF() {
+        return f;
+    }
+
+    public void setF(double f) {
+        this.f = f;
     }
 
     public static int getNUM() {
