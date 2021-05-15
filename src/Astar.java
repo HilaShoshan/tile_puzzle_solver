@@ -1,7 +1,7 @@
 import java.util.*;
 
 /**
- * Implementing the Informed-search A* algorithm, with closed-list.
+ * Implement the Informed-search A* algorithm, with closed-list.
  */
 public class Astar implements Algorithm {
 
@@ -12,11 +12,13 @@ public class Astar implements Algorithm {
     private HashMap<String, Node> L_hash = new HashMap<>();
     private HashMap<String, Node> C = new HashMap<>();  // closeList
 
+    ArrayList<Point> emptyCells;
+
     public Astar(int[][] start) {
         this.state = new Node(start);
-        L_queue = new PriorityQueue<Node>(new NodeComparator());
-        L_queue.add(state);
-        L_hash.put(state.toString(), state);
+        L_queue = new PriorityQueue<Node>(new NodeComparator());  // init a PriorityQueue of Nodes with comparator that compare the nodes' f-value.
+        L_queue.add(state);  // add the initial state to queue
+        L_hash.put(state.toString(), state);  // and hash
     }
 
     @Override
@@ -26,7 +28,7 @@ public class Astar implements Algorithm {
             L_hash.remove(state.toString());
             if (HelperFunctions.isGoal(state.getBoard())) return;
             C.put(state.toString(), state);
-            ArrayList<Point> emptyCells = HelperFunctions.findEmptyCells(state.getBoard());
+            emptyCells = HelperFunctions.findEmptyCells(state.getBoard());
             for (int i = 0; i < emptyCells.size(); i++) {
                 for (String operator : OPERATORS) {  // check moving one item
                     temp = state.doOperator(emptyCells, i, operator);
@@ -36,6 +38,10 @@ public class Astar implements Algorithm {
         }
     }
 
+    /**
+     * A Helper function that checks if temp (state's child) should be entered to the queue, or be replaced,
+     * and do what need to be done.
+     */
     private void CheckAndAdd() {
         if (temp != null) {
             if (!C.containsKey(temp.toString()) && !L_hash.containsKey(temp.toString())) {
@@ -44,12 +50,12 @@ public class Astar implements Algorithm {
             }
             else if (L_hash.containsKey(temp.toString())) {
                 Node tempInL = L_hash.get(temp.toString());
-                int fQueue = tempInL.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard());
-                int fNew = temp.getCost() + 5*Heuristics.ManhattanDistance2D(tempInL.getBoard());
-                if (fQueue > fNew) {
-                    L_hash.remove(temp.toString());  // remove tempInL from the queue
-                    L_hash.put(temp.toString(), temp);
-                    L_queue.remove(tempInL);
+                HelperFunctions.setF_manhattan(tempInL, emptyCells.size());
+                HelperFunctions.setF_manhattan(temp, emptyCells.size());
+                if (tempInL.getF() > temp.getF()) {
+                    L_hash.remove(temp.toString());  // remove tempInL from the hash
+                    L_hash.put(temp.toString(), temp);  // insert temp
+                    L_queue.remove(tempInL);  // do the same to the queue
                     L_queue.add(temp);
                 }
             }

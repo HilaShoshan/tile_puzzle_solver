@@ -1,7 +1,8 @@
 import java.util.*;
 
 /**
- * Implementing the Uniformed-search BFS algorithm, with closed-list.
+ * Implement the Uniformed-search BFS algorithm, with closed-list.
+ * finding the shortest path (with the lowest number of moving operations).
  */
 public class BFS implements Algorithm {
 

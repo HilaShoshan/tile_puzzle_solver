@@ -1,5 +1,12 @@
 import java.io.PrintWriter;
 
+/**
+ * The main class.
+ * Initializes the game using InitGame class.
+ * Measures the run time of the program.
+ * Runs the right algorithm.
+ * Write to output.txt file all the asked details.
+ */
 public class Ex1 {
 
     public static int[][] GOAL;
@@ -47,9 +54,9 @@ public class Ex1 {
             writer.println("no path");
         } else {
             String path = "";
-            String toAdd;
+            String toAdd;  // a string that will be added to path each time
             Node temp = state;
-            while (temp.getFather() != null) {
+            while (temp.getFather() != null) {  // restores the path from the fathers of the Node
                 toAdd = temp.getPrevItem() + temp.getPrevAction();
                 if (path != "") toAdd+= "-";
                 path = toAdd + path;

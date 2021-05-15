@@ -1,9 +1,11 @@
-import com.sun.xml.internal.ws.encoding.MtomCodec;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+/**
+ * Implement the IDA* (iterative deepening version of A*) informed search algorithm.
+ * Using stack and loop-avoidance.
+ */
 public class IDAstar implements Algorithm {
 
     private Node state, n, g, g_twin;

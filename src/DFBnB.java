@@ -1,7 +1,9 @@
-import javafx.print.Collation;
-
 import java.util.*;
 
+/**
+ * Implementing the DFBnB (Depth First Branch and Bound) Informed search algorithm.
+ * The implementation uses stack, no closed-list, but with loop avoidance.
+ */
 public class DFBnB implements Algorithm {
 
     private Node state, n, g;
@@ -14,7 +16,7 @@ public class DFBnB implements Algorithm {
 
     public DFBnB(int[][] start) {
         this.state = new Node(start);
-        L.push(state);
+        L.push(state);  // push the initial state to the stack
         H.put(state.toString(), state);
     }
 
@@ -73,6 +75,10 @@ public class DFBnB implements Algorithm {
         }
     }
 
+    /**
+     * Find all children of Node n, by running operator function, and put it on children list.
+     * Then sorting the list by the Node comparator (f-values).
+     */
     private void findChildren(Node n) {
         emptyCells = HelperFunctions.findEmptyCells(n.getBoard());
         Node child;

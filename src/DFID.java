@@ -2,20 +2,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * class that implements the recursive DFID algorithm with loop avoidance
+ * Implement the recursive DFID algorithm with loop avoidance.
+ * As BFS, finding the shortest path (with the lowest number of moving operations).
  */
 public class DFID implements Algorithm {
 
-    private Node state; //temp;
+    private Node state;
 
     // data for the algorithm
     private HashMap<String, Node> H; // saves the vertices on the current path - for the loop avoidance
     private int depth = 1;  // the limit for the Limited_DFS
 
-    enum Result {
-        FOUND,
-        CUTOFF,
-        FAILED
+    enum Result {  // all the possible results of the limited_DFS algorithm.
+        FOUND,     // found the goal
+        CUTOFF,    // didn't find the goal yet, but it stopped because of the limit
+        FAILED     // there is no goal (went through the whole tree and didn't find)
     }
 
     public DFID(int[][] start) {
