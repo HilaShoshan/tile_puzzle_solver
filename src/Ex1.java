@@ -52,7 +52,7 @@ public class Ex1 {
         }
         estimatedTime = System.currentTimeMillis() - startTime;
         Node state = algo.getState();
-        PrintWriter writer = new PrintWriter("Astar_input2.txt", "UTF-8");  // change to output.txt!!!
+        PrintWriter writer = new PrintWriter("result.txt", "UTF-8");  // change to output.txt!!!
         if (state.getFather() == null) {
             writer.println("no path");
         } else {
