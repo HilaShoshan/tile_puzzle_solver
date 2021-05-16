@@ -20,7 +20,7 @@ public class IDAstar implements Algorithm {
 
     @Override
     public void run() {
-        HelperFunctions.setF_manhattan(state, HelperFunctions.findEmptyCells(Ex1.GOAL).size());
+        HelperFunctions.setF_manhattan(state);
         double t = state.getF();
         double minF;
         ArrayList<Point> emptyCells;
@@ -45,7 +45,7 @@ public class IDAstar implements Algorithm {
                             if (g == null) {
                                 continue;
                             }
-                            HelperFunctions.setF_manhattan(g, emptyCells.size());
+                            HelperFunctions.setF_manhattan(g);
                             if (g.getF() > t) {
                                 minF = Math.min(minF, g.getF());
                                 continue;

@@ -16,6 +16,7 @@ public class Astar implements Algorithm {
 
     public Astar(int[][] start) {
         this.state = new Node(start);
+        HelperFunctions.setF_manhattan(state);
         L_queue = new PriorityQueue<Node>(new NodeComparator());  // init a PriorityQueue of Nodes with comparator that compare the nodes' f-value.
         L_queue.add(state);  // add the initial state to queue
         L_hash.put(state.toString(), state);  // and hash
@@ -44,16 +45,17 @@ public class Astar implements Algorithm {
      */
     private void CheckAndAdd() {
         if (temp != null) {
+            HelperFunctions.setF_manhattan(temp);
             if (!C.containsKey(temp.toString()) && !L_hash.containsKey(temp.toString())) {
                 L_hash.put(temp.toString(), temp);
                 L_queue.add(temp);
             }
             else if (L_hash.containsKey(temp.toString())) {
                 Node tempInL = L_hash.get(temp.toString());
-                HelperFunctions.setF_manhattan(tempInL, emptyCells.size());
-                HelperFunctions.setF_manhattan(temp, emptyCells.size());
+                HelperFunctions.setF_manhattan(tempInL);
+                HelperFunctions.setF_manhattan(temp);
                 if (tempInL.getF() > temp.getF()) {
-                    L_hash.remove(temp.toString());  // remove tempInL from the hash
+                    L_hash.remove(tempInL.toString());  // remove tempInL from the hash
                     L_hash.put(temp.toString(), temp);  // insert temp
                     L_queue.remove(tempInL);  // do the same to the queue
                     L_queue.add(temp);

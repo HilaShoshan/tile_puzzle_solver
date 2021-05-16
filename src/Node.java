@@ -36,7 +36,6 @@ public class Node {
         this.cost = cost;
         this.prevAction = prevAction;
         this.prevItem = prevItem;
-        this.f = cost;
     }
 
     /**

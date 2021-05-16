@@ -63,15 +63,14 @@ public class HelperFunctions {
     }
 
     /**
-     * Set f = g + h, while h is Manhattan Distance * 3
+     * Set f = g + h, while h is Manhattan Distance * 3 if there are 2 empty cells, and manhattan * 5 if there is one.
      * @param node = the node that we want to set it's f
-     * @param num = the number of empty cells on the board (size of emptyCells list, to know if there is one or two)
      */
-    public static void setF_manhattan(Node node, int num) {
-        if (num == 1)  // one empty cell - each step's price is 5
-            node.setF(node.getCost() + 5*Heuristics.ManhattanDistance2D(node.getBoard()));
+    public static void setF_manhattan(Node node) {
+        if (Ex1.NumEmptyCells == 1)  // one empty cell - each step's price is 5
+            node.setF(node.getCost() + 5 * Heuristics.ManhattanDistance2D(node.getBoard()));
         else  // two empty cells - it is possible that one step will be 3 (if the empty cells are one below the other)
-            node.setF(node.getCost() + 3*Heuristics.ManhattanDistance2D(node.getBoard()));
+            node.setF(node.getCost() + 3 * Heuristics.ManhattanDistance2D(node.getBoard()));
     }
 
     /**

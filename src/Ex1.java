@@ -11,6 +11,7 @@ public class Ex1 {
 
     public static int[][] GOAL;
     public static boolean OPEN;
+    public static int NumEmptyCells;  // 1 or 2
 
     public static void main(String[] args) throws Exception {
 
@@ -19,8 +20,10 @@ public class Ex1 {
 
         GOAL = game.getGoal_state();  // init the goal matrix of that game
         OPEN = game.getOpen();
+        NumEmptyCells = game.getNumEmptyCells();
         int[][] start = game.getStart_state();
         String algorithm = game.getAlgorithm();
+
         Algorithm algo;
         startTime = System.currentTimeMillis();
         switch (algorithm) {
@@ -49,7 +52,7 @@ public class Ex1 {
         }
         estimatedTime = System.currentTimeMillis() - startTime;
         Node state = algo.getState();
-        PrintWriter writer = new PrintWriter("result.txt", "UTF-8");  // change to output.txt!!!
+        PrintWriter writer = new PrintWriter("Astar_input2.txt", "UTF-8");  // change to output.txt!!!
         if (state.getFather() == null) {
             writer.println("no path");
         } else {
