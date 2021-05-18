@@ -45,7 +45,7 @@ public class DFBnB implements Algorithm {
                         }
                     } else if (contains_g) {
                         Node g_twin = H.get(g.toString());
-                        HelperFunctions.setF_manhattan(g_twin);
+                        g_twin.setF(g_twin.getCost() + Heuristics.ManhattanDistance2D(g_twin.getBoard()));
                         if (g_twin.isOUT())  // If H contains g’=g and g’ is marked as "out"
                             itr.remove();  // remove g from children
                         else {  // If H contains g’=g and g’ is not marked as "out"
@@ -86,7 +86,7 @@ public class DFBnB implements Algorithm {
             for (String operator : OPERATORS) {
                 child = n.doOperator(emptyCells, i, operator);
                 if (child != null) {
-                    HelperFunctions.setF_manhattan(child);
+                    child.setF(child.getCost() + Heuristics.ManhattanDistance2D(child.getBoard()));
                     children.add(child);
                 }
             }
