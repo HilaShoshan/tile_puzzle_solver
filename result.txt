@@ -1,2 +1,4 @@
-no path
-Num: 289
+6U-5R-3R-3U-2&4U-7L-5D-6D-3R-1R-2U-4&7L-1D-5L
+Num: 201012
+Cost: 73
+0.781 seconds

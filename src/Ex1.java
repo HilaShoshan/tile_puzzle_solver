@@ -68,11 +68,7 @@ public class Ex1 {
             writer.println(path);
         }
         writer.println("Num: " + state.getNUM());
-        if (algo.isNoPath()) {
-            writer.close();
-            return;  // write just 2 lines in that case
-        }
-        writer.println("Cost: " + state.getCost());  // print the cost just in case that there is a path
+        if (!algo.isNoPath()) writer.println("Cost: " + state.getCost());  // print the cost just in case that there is a path
         if (game.getTime()) {
             writer.println(estimatedTime/1000.0 + " seconds");
         }

@@ -80,19 +80,4 @@ public class HelperFunctions {
             System.out.println(Arrays.toString(row));
     }
 
-    public static void print_actions(ArrayList<Character> list) {
-        System.out.println("prevActions:");
-        for (char c : list) {
-            System.out.print(c + " ");
-        }
-        System.out.println();
-    }
-
-    public static void print_items(ArrayList<String> list) {
-        System.out.println("previtems:");
-        for (String s : list) {
-            System.out.print(s + " ");
-        }
-        System.out.println();
-    }
 }
