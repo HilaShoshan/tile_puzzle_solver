@@ -29,6 +29,6 @@ public class Heuristics {
         if (Ex1.NumEmptyCells == 1)
             return 5 * Math.abs(p1.getI()-p2.getI()) + 5 * Math.abs(p1.getJ()-p2.getJ());
         else
-            return 3 * Math.abs(p1.getI()-p2.getI()) + 3.5 * Math.abs(p1.getJ()-p2.getJ());
+            return 3.5 * Math.abs(p1.getI()-p2.getI()) + 3 * Math.abs(p1.getJ()-p2.getJ());
     }
 }

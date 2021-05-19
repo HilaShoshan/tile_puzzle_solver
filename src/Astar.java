@@ -24,8 +24,10 @@ public class Astar implements Algorithm {
 
     @Override
     public void run() {
+        int iteration = 0;
         while (!L_queue.isEmpty()) {
             state = L_queue.remove();
+            if (Ex1.OPEN) HelperFunctions.print_openList(L_hash, iteration);
             L_hash.remove(state.toString());
             if (HelperFunctions.isGoal(state.getBoard())) return;
             C.put(state.toString(), state);
@@ -36,6 +38,7 @@ public class Astar implements Algorithm {
                     CheckAndAdd();
                 }
             }
+            iteration ++;
         }
     }
 
