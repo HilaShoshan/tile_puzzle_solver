@@ -7,6 +7,7 @@ import java.util.*;
 public class BFS implements Algorithm {
 
     private Node state, temp;
+    private boolean noPath = false;
 
     // data structures for the algorithm
     private Queue<Node> L_queue = new LinkedList<>();
@@ -21,7 +22,7 @@ public class BFS implements Algorithm {
     public void run() {
         L_queue.add(state);
         L_hash.put(state.toString(), state);
-        int i = 0;
+        int i = 1;
         while (!L_queue.isEmpty()) {
             if (Ex1.OPEN) HelperFunctions.print_openList(L_hash, i);
             state = L_queue.remove();  // remove and return the element at the head the queue
@@ -36,6 +37,7 @@ public class BFS implements Algorithm {
             }
             i++;
         }
+        this.noPath = true;
     }
 
     /**
@@ -59,6 +61,11 @@ public class BFS implements Algorithm {
     @Override
     public Node getState() {
         return state;
+    }
+
+    @Override
+    public boolean isNoPath() {
+        return this.noPath;
     }
 
 }

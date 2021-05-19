@@ -53,7 +53,7 @@ public class Ex1 {
         estimatedTime = System.currentTimeMillis() - startTime;
         Node state = algo.getState();
         PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
-        if (state.getFather() == null) {
+        if (algo.isNoPath()) {
             writer.println("no path");
         } else {
             String path = "";
@@ -68,7 +68,11 @@ public class Ex1 {
             writer.println(path);
         }
         writer.println("Num: " + state.getNUM());
-        writer.println("Cost: " + state.getCost());
+        if (algo.isNoPath()) {
+            writer.close();
+            return;  // write just 2 lines in that case
+        }
+        writer.println("Cost: " + state.getCost());  // print the cost just in case that there is a path
         if (game.getTime()) {
             writer.println(estimatedTime/1000.0 + " seconds");
         }

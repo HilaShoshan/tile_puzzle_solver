@@ -13,6 +13,7 @@ public class IDAstar implements Algorithm {
     // data structures for the algorithm
     private Stack<Node> L = new Stack<>();
     private HashMap<String, Node> H = new HashMap<>();
+    private boolean noPath = false;
 
     public IDAstar(int[][] start) {
         this.state = new Node(start);
@@ -24,7 +25,7 @@ public class IDAstar implements Algorithm {
         double t = state.getF();
         double minF;
         ArrayList<Point> emptyCells;
-        int iteration = 0;
+        int iteration = 1;
         while (t != Integer.MAX_VALUE) {
             minF = Integer.MAX_VALUE;
             L.push(state);
@@ -72,10 +73,16 @@ public class IDAstar implements Algorithm {
             }
             t = minF;
         }
+        this.noPath = true;
     }
 
     @Override
     public Node getState() {
         return state;
+    }
+
+    @Override
+    public boolean isNoPath() {
+        return this.noPath;
     }
 }

@@ -6,6 +6,7 @@ import java.util.*;
 public class Astar implements Algorithm {
 
     private Node state, temp;
+    private boolean noPath = false;
 
     // data structures for the algorithm
     private PriorityQueue<Node> L_queue;  // sorted by the node's f-value (lower f value => better grade)
@@ -40,6 +41,7 @@ public class Astar implements Algorithm {
             }
             iteration ++;
         }
+        this.noPath = true;
     }
 
     /**
@@ -70,5 +72,10 @@ public class Astar implements Algorithm {
     @Override
     public Node getState() {
         return this.state;
+    }
+
+    @Override
+    public boolean isNoPath() {
+        return this.noPath;
     }
 }

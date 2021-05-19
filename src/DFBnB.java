@@ -13,6 +13,7 @@ public class DFBnB implements Algorithm {
     private HashMap<String, Node> H = new HashMap<>();
     private ArrayList<Node> children = new ArrayList<>();
     private ArrayList<Point> emptyCells;
+    private boolean noPath = true;  // starting like there is no path and if we'll find one we'll change it.
 
     public DFBnB(int[][] start) {
         this.state = new Node(start);
@@ -58,6 +59,7 @@ public class DFBnB implements Algorithm {
                     } else if (HelperFunctions.isGoal(g.getBoard())) {  // if we reached here, f(g) < t
                         t = g.getF();
                         state = g;  // like setting the "result" to path(g)
+                        this.noPath = false;
                         itr.remove();
                         while (itr.hasNext()) {
                             itr.next();
@@ -97,5 +99,10 @@ public class DFBnB implements Algorithm {
     @Override
     public Node getState() {
         return state;
+    }
+
+    @Override
+    public boolean isNoPath() {
+        return this.noPath;
     }
 }

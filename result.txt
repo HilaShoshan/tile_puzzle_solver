@@ -1,4 +1,2 @@
-8R-11D-7L-8U
-Num: 19
-Cost: 20
-0.097 seconds
+no path
+Num: 289

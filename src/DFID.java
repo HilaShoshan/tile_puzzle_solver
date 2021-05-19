@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class DFID implements Algorithm {
 
     private Node state;
+    private boolean noPath = false;
 
     // data for the algorithm
     private HashMap<String, Node> H; // saves the vertices on the current path - for the loop avoidance
@@ -27,7 +28,14 @@ public class DFID implements Algorithm {
     public void run() {
         while (depth > 0) {  // infinite loop
             H = new HashMap<>();
-            if (limited_DFS(state, depth, H) != Result.CUTOFF) return;
+            if (limited_DFS(state, depth, H) == Result.FAILED) {
+                noPath = true;
+                return;
+            }
+            if (limited_DFS(state, depth, H) == Result.FOUND) {
+                return;
+            }
+            // here result == CUTOFF
             depth++;
         }
     }
@@ -49,7 +57,7 @@ public class DFID implements Algorithm {
         ArrayList<Point> emptyCells = HelperFunctions.findEmptyCells(n.getBoard());
         Result result;
         Node g;
-        for (int i = 0; i < emptyCells.size(); i++) {   // not stopping on input2.txt!!!!
+        for (int i = 0; i < emptyCells.size(); i++) {
             for (String operator : OPERATORS) {  // check moving one item
                 g = n.doOperator(emptyCells, i, operator);
                 if (g != null) {
@@ -60,10 +68,7 @@ public class DFID implements Algorithm {
                 }
             }
         }
-        if (Ex1.OPEN) {  // here???
-            System.out.println("Recursive call number " + Integer.toString(depth-limit));
-            HelperFunctions.print_openList(Hash, depth);
-        }
+        if (Ex1.OPEN) HelperFunctions.print_openList(Hash, depth);
         Hash.remove(n.toString());
         if (isCutoff) return Result.CUTOFF;
         else return Result.FAILED;
@@ -72,5 +77,10 @@ public class DFID implements Algorithm {
     @Override
     public Node getState() {
         return this.state;
+    }
+
+    @Override
+    public boolean isNoPath() {
+        return this.noPath;
     }
 }

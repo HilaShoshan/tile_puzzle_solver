@@ -7,4 +7,5 @@ public interface Algorithm {
 
     public void run();
     public Node getState();
+    public boolean isNoPath();
 }
