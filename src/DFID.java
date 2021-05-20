@@ -28,11 +28,12 @@ public class DFID implements Algorithm {
     public void run() {
         while (depth > 0) {  // infinite loop
             H = new HashMap<>();
-            if (limited_DFS(state, depth, H) == Result.FAILED) {
+            Result result = limited_DFS(state, depth, H);
+            if (result == Result.FAILED) {
                 noPath = true;
                 return;
             }
-            if (limited_DFS(state, depth, H) == Result.FOUND) {
+            if (result == Result.FOUND) {
                 return;
             }
             // here result == CUTOFF
