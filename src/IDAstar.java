@@ -27,7 +27,7 @@ public class IDAstar implements Algorithm {
         ArrayList<Point> emptyCells;
         int iteration = 1;
         while (t != Integer.MAX_VALUE) {
-            minF = Integer.MAX_VALUE;
+            minF = Double.MAX_VALUE;
             L.push(state);
             H.put(state.toString(), state);
             state.setOUT(false);

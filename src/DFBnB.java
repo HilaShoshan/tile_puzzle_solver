@@ -36,8 +36,10 @@ public class DFBnB implements Algorithm {
                 findChildren(n);  // after this function, the "children" ArrayList contains all the children of n, and sorted by children's f values
                 Iterator<Node> itr = children.iterator();
                 while (itr.hasNext()) {
-                    g = itr.next();
+                    g = itr.next();  // iterate the children of n
                     boolean contains_g = H.containsKey(g.toString());
+                    /*if (g.getF() < n.getF())  // if f(father) > f(child) so f is not monotone-decreasing and h is not consistent
+                        System.out.println("not consistent!!!!!!");*/
                     if (g.getF() >= t) {
                         itr.remove();
                         while (itr.hasNext()) {

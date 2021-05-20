@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Heuristics {
 
     public static double ManhattanDistance2D(int[][] state) {
-        int result = 0;
+        double result = 0;
         HashMap<Integer, Point> goalMap = new HashMap<>();
         for (int i = 0; i < Ex1.GOAL.length; i++) {
             for (int j = 0; j < Ex1.GOAL[0].length; j++) {
