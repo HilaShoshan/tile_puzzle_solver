@@ -36,10 +36,8 @@ public class DFBnB implements Algorithm {
                 findChildren(n);  // after this function, the "children" ArrayList contains all the children of n, and sorted by children's f values
                 Iterator<Node> itr = children.iterator();
                 while (itr.hasNext()) {
-                    g = itr.next();  // iterate the children of n
+                    g = itr.next();
                     boolean contains_g = H.containsKey(g.toString());
-                    /*if (g.getF() < n.getF())  // if f(father) > f(child) so f is not monotone-decreasing and h is not consistent
-                        System.out.println("not consistent!!!!!!");*/
                     if (g.getF() >= t) {
                         itr.remove();
                         while (itr.hasNext()) {
@@ -84,6 +82,7 @@ public class DFBnB implements Algorithm {
      * Then sorting the list by the Node comparator (f-values).
      */
     private void findChildren(Node n) {
+//        System.out.println("father cost: " + n.getCost());
         emptyCells = HelperFunctions.findEmptyCells(n.getBoard());
         Node child;
         for (int i = 0; i < emptyCells.size(); i++) {

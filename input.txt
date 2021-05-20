@@ -1,6 +1,6 @@
 DFBnB
 with time
-with open
+no open
 3x4
 1,2,3,4
 5,6,11,7

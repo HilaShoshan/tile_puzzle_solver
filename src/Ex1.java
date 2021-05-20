@@ -5,7 +5,7 @@ import java.io.PrintWriter;
  * Initializes the game using InitGame class.
  * Measures the run time of the program.
  * Runs the right algorithm.
- * Write to output.txt file all the asked details.
+ * Write to dfbnb_input2.txt file all the asked details.
  */
 public class Ex1 {
 
